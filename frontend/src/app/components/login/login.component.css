@@ -60,7 +60,8 @@ input:focus {
 }
 
 .login-button:hover {
-    background-color: #B53040; /* Nhẹ hơn một chút khi hover */
+    /* background-color: #B53040; Nhẹ hơn một chút khi hover */
+    box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1);
 }
 
 .message {
