@@ -1,72 +1,85 @@
-const db = require('../config/db');
+const db = require("../config/db");
+const bcrypt = require("bcryptjs");
 
 const User = {
     getAllUsers: (callback) => {
-        db.query('SELECT * FROM users', callback);
+        db.query("SELECT * FROM users", callback);
     },
 
-    getUserById: (userId, callback) => {
-        db.query('SELECT * FROM users WHERE id = ?', [userId], callback);
+    getUserById: (userName, callback) => {
+        db.query("SELECT * FROM users WHERE username = ?", [userName], callback);
     },
 
     createUser: (userData, callback) => {
         const { username, password, fullname, role } = userData;
-        db.query(
-            'select min(t1.id + 1) as lost_id from users t1 left join users t2 on t1.id + 1 = t2.id where t2.id is null',
-        (err, result) => {
+
+        // Mã hóa mật khẩu trước khi lưu
+        bcrypt.hash(password, 10, (err, hashedPassword) => {
             if (err) {
                 return callback(err);
             }
-            let lost_Id = result[0].lost_id || null;
 
-            const insertQuery = lost_Id 
-                ? 'insert into users (id, username, password, fullname, role) values (?, ?, ?, ?, ?);'
-                : 'insert into users (username, password, fullname, role) values (?, ?, ?, ?);';
+            db.query(
+                "SELECT MIN(t1.id + 1) AS lost_id FROM users t1 LEFT JOIN users t2 ON t1.id + 1 = t2.id WHERE t2.id IS NULL",
+                (err, result) => {
+                    if (err) {
+                        return callback(err);
+                    }
+                    let lost_Id = result[0].lost_id || null;
 
-            const values = lost_Id
-                ? [lost_Id, username, password, fullname, role]
-                : [username, password, fullname, role];
+                    const insertQuery = lost_Id
+                        ? "INSERT INTO users (id, username, password, fullname, role) VALUES (?, ?, ?, ?, ?);"
+                        : "INSERT INTO users (username, password, fullname, role) VALUES (?, ?, ?, ?);";
 
-            db.query(insertQuery, values, callback);
+                    const values = lost_Id
+                        ? [lost_Id, username, hashedPassword, fullname, role]
+                        : [username, hashedPassword, fullname, role];
+
+                    db.query(insertQuery, values, callback);
+                }
+            );
         });
     },
 
     updateUser: (userId, userData, callback) => {
-        db.query('SELECT * FROM users WHERE id = ?', [userId], (err, results) => {
-            if (err) {
-                callback(err, null);
-                return;
-            }
-            if (results.length === 0) {
-                callback(new Error('User not found!'), null);
-                return;
-            }
+        db.query("SELECT * FROM users WHERE id = ?", [userId], (err, results) => {
+            if (err) return callback(err, null);
+            if (results.length === 0) return callback(new Error("User not found!"), null);
 
             const existingUser = results[0];
             const updateUser = {
                 username: userData.username || existingUser.username,
-                password: userData.password || existingUser.password,
                 fullname: userData.fullname || existingUser.fullname,
                 role: userData.role || existingUser.role,
             };
 
+            // Kiểm tra nếu người dùng nhập mật khẩu mới, thực hiện mã hóa
+            if (userData.password) {
+                bcrypt.hash(userData.password, 10, (err, hashedPassword) => {
+                    if (err) return callback(err, null);
+                    updateUser.password = hashedPassword;
+                    updateUserInDB(userId, updateUser, callback);
+                });
+            } else {
+                updateUser.password = existingUser.password; // Giữ nguyên mật khẩu cũ nếu không thay đổi
+                updateUserInDB(userId, updateUser, callback);
+            }
+        });
+
+        function updateUserInDB(userId, updateUser, callback) {
             db.query(
-                'UPDATE users SET username = ?, password = ?, fullname = ?, role = ? WHERE id = ?',
+                "UPDATE users SET username = ?, password = ?, fullname = ?, role = ? WHERE id = ?",
                 [updateUser.username, updateUser.password, updateUser.fullname, updateUser.role, userId],
                 (error, results) => {
-                    if (error) {
-                        callback(error, null);
-                        return;
-                    }
+                    if (error) return callback(error, null);
                     callback(null, { id: userId, ...updateUser });
                 }
             );
-        });
-        
+        }
     },
 
     deleteUser: (userId, callback) => {
-        db.query('DELETE FROM users WHERE id = ?', [userId], callback);
+        db.query("DELETE FROM users WHERE id = ?", [userId], callback);
     },
 };
 

@@ -3,6 +3,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 // require('dotenv').config();
 const db = require('./config/db');
+const session = require('express-session');
 
 const app = express();
 app.use(cors({
@@ -10,10 +11,18 @@ app.use(cors({
     methods: 'GET,POST,PUT,DELETE',
     allowedHeaders: 'Content-Type,Authorization'
 }));
+
+app.use(session({
+  secret: 'LGE', // Thay bằng secret key của bạn
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false } // Để `false` nếu không dùng HTTPS
+}));
+
 app.use(bodyParser.json());
 
 const authRoutes = require('./routes/auth.routes');
-app.use('/api', authRoutes);
+app.use('/api/auth', authRoutes);
 
 const userRoutes = require('./routes/user.routes');
 app.use('/api/users', userRoutes);

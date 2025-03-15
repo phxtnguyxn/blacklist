@@ -1,29 +1,30 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:3000/api/login';
+  private apiUrl = 'http://localhost:3000/api/auth/login';
+  private router = inject(Router); 
 
-  constructor(private http: HttpClient, private router: Router) {} // Inject Router vào constructor
+  constructor(private http: HttpClient) {}
 
-  login(username: string, password: string) {
-    return this.http.post(this.apiUrl, { username, password });
+  login(username: string, password: string): Observable<{ success: boolean }> {
+    return this.http.post<{ success: boolean }>(this.apiUrl, { username, password });
   }
 
-  logout() {
-    localStorage.removeItem('token'); // Xóa token
-    this.router.navigate(['/login']); // Điều hướng về trang đăng nhập
+  logout(): void {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('isLoggedIn');
+    }
+    this.router.navigate(['/login']); 
   }
 
-  getToken() {
-    return localStorage.getItem('token');
-  }
-
-  isLoggedIn() {
-    return !!this.getToken();
+  isLoggedIn(): boolean {
+    if (typeof window === 'undefined') return false; // ✅ Fix lỗi khi chạy SSR
+    return localStorage.getItem('isLoggedIn') === 'true';
   }
 }

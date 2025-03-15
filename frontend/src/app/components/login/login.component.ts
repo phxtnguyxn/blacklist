@@ -1,47 +1,39 @@
-import { Component } from '@angular/core';
-import { NgIf } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { Component, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms'; 
+import { AuthService } from '../../services/auth.services';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   standalone: true,
+  imports: [FormsModule], 
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'],
-  imports: [FormsModule, NgIf, HttpClientModule],
+  styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
   username = '';
   password = '';
-  message = '';
-  isError = false;
-  showPassword = false;
+  showPassword = false; 
 
-  constructor(private http: HttpClient, private router: Router) {}
+  private authService = inject(AuthService);
+  private router = inject(Router);
 
   togglePassword() {
-    this.showPassword = !this.showPassword;
+    this.showPassword = !this.showPassword; 
   }
 
   login() {
-    console.log('🛠️ Gửi yêu cầu đăng nhập:', this.username, this.password);
-
-    this.http.post<any>('http://localhost:3000/api/login', {
-      username: this.username,
-      password: this.password,
-    }).subscribe({
-      next: (response) => {
-        console.log('✅ Đăng nhập thành công!', response);
-        localStorage.setItem('token', response.token); // Store the token
-
-        this.router.navigate(['/home']);
+    this.authService.login(this.username, this.password).subscribe({
+      next: (res) => {
+        if (res.success) {
+          if (typeof window !== 'undefined') {
+            localStorage.setItem('isLoggedIn', 'true'); 
+          }
+          this.router.navigate(['/home']); 
+        }
       },
-      error: (error) => {
-        console.error('❌ Lỗi đăng nhập:', error);
-        this.message = '❌ Sai username hoặc password!';
-        this.isError = true;
-        setTimeout(() => this.message = '', 3000);
+      error: (err) => {
+        console.error('Lỗi đăng nhập:', err);
       }
     });
   }

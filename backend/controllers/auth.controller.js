@@ -1,30 +1,28 @@
-const jwt = require('jsonwebtoken');
-const db = require('../config/db');
+const AuthService = require("../services/auth.services");
 
-const JWT_SECRET = process.env.JWT_SECRET || 'mysecretkey';
-
-exports.login = async (req, res) => {
+exports.login = (req, res) => {
     const { username, password } = req.body;
-    console.log('🛠️ Debug Login Request:', username, password);
 
-    try {
-        const [rows] = await db.query('SELECT * FROM user WHERE username = ?', [username]);
-        if (rows.length === 0) {
-            console.log('❌ Không tìm thấy username!');
-            return res.status(401).json({ message: 'Sai username hoặc password!' });
+    AuthService.login(username, password, (err, user) => {
+        if (err) return res.status(401).json({ message: err.message });
+        if (!req.session) {
+            return res.status(500).json({ message: "Session is not initialized" });
         }
 
-        const user = rows[0];
-        if (password !== user.password) {
-            console.log('❌ Sai password!');
-            return res.status(401).json({ message: 'Sai username hoặc password!' });
-        }
+        req.session.user = { id: user.id, username: user.username, role: user.role };
+        res.json({ message: "Login successful", user: req.session.user });
+    });
+};
 
-        console.log('✅ Đăng nhập thành công!', user);
-        const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: '1h' });
-        return res.json({ message: 'Đăng nhập thành công!', token });
-    } catch (err) {
-        console.error('❌ Lỗi SQL:', err);
-        return res.status(500).json({ message: 'Lỗi server', error: err });
+exports.checkLogin = (req, res) => {
+    if (req.session.user) {
+        return res.json({ isAuthenticated: true, user: req.session.user });
     }
+    res.json({ isAuthenticated: false });
+};
+
+exports.logout = (req, res) => {
+    req.session.destroy(() => {
+        res.json({ message: "Logged out successfully" });
+    });
 };

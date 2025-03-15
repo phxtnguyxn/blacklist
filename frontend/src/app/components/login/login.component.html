@@ -1,20 +1,20 @@
 <div class="login-container">
-    <h2>Đăng Nhập</h2>
-  
-    <div class="input-group">
-      <input type="text" placeholder="Username" [(ngModel)]="username" (keydown.enter)="login()" />
-    </div>
-  
-    <div class="input-group">
-      <input [type]="showPassword ? 'text' : 'password'" placeholder="Password" [(ngModel)]="password" (keydown.enter)="login()" />
-      <button type="button" class="toggle-password" (click)="togglePassword()">
-        {{ showPassword ? 'Hide' : 'Show' }}
-      </button>
-    </div>
-  
-    <button class="login-button" (click)="login()">Login</button>
-  
-    <p *ngIf="message" class="message" [class.error]="isError">
-      {{ message }}
-    </p>
+  <h2>Đăng Nhập</h2>
+
+  <div class="input-group">
+    <input type="text" placeholder="Username"
+           [(ngModel)]="username"
+           (keydown.enter)="login()" />
   </div>
+
+  <div class="input-group">
+    <input [type]="showPassword ? 'text' : 'password'" placeholder="Password"
+           [(ngModel)]="password"
+           (keydown.enter)="login()" />
+    <button type="button" class="toggle-password" (click)="togglePassword()">
+      {{ showPassword ? 'Hide' : 'Show' }}
+    </button>
+  </div>
+
+  <button class="login-button" (click)="login()">Login</button>
+</div>
