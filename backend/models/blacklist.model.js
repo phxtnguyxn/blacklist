@@ -45,9 +45,9 @@ const Blacklist = {
                 return callback(err);
             }
 
-            let lost_Id = result[0].lost_Id || null;
+            let lost_Id = result[0].lost_id || null;
             const insertQuery = lost_Id
-            ? `INSERT INTO blacklist (id, cccd, fullname, company, violation, penalty_start, penalty_end, created_by, note) VALUES (${lost_Id},?,?,?,?,?,?,?,?)`
+            ? `INSERT INTO blacklist (id, cccd, fullname, company, violation, penalty_start, penalty_end, created_by, note) VALUES (?,?,?,?,?,?,?,?,?)`
             : 'INSERT INTO blacklist (cccd, fullname, company, violation, penalty_start, penalty_end, created_by, note) VALUES (?,?,?,?,?,?,?,?)';
 
             const values = lost_Id
@@ -58,8 +58,10 @@ const Blacklist = {
         });
     },
 
-    updateBlacklist: (CCCD, userBlacklist, callback) => {
-        db.query('select * from blacklist where cccd = ?', [CCCD], (err, results) => {
+    updateBlacklist: (blacklistId, userBlacklist, callback) => {
+        userBlacklist = userBlacklist || {};
+
+        db.query('select * from blacklist where id = ?', [blacklistId], (err, results) => {
             if (err) {
                 callback(err, null);
                 return;
@@ -71,6 +73,8 @@ const Blacklist = {
 
             const existingBlacklist = results[0];
             const updateBlacklist = {
+                id: userBlacklist.id || existingBlacklist.id,
+                cccd: userBlacklist.cccd || existingBlacklist.cccd,
                 fullname: userBlacklist.fullname || existingBlacklist.fullname,
                 company: userBlacklist.company || existingBlacklist.company,
                 violation: userBlacklist.violation || existingBlacklist.violation,
@@ -81,8 +85,9 @@ const Blacklist = {
             };
 
             db.query(
-                'update blacklist set fullname = ?, company = ?, violation = ?, penalty_start = ?, penalty_end = ?, created_by = ?, note = ? where cccd = ?',
+                "update blacklist set cccd = ?, fullname = ?, company = ?, violation = ?, penalty_start = ?, penalty_end = ?, created_by = ?, note = ? where id = ?",
                 [
+                    updateBlacklist.cccd,
                     updateBlacklist.fullname,
                     updateBlacklist.company,
                     updateBlacklist.violation,
@@ -90,21 +95,21 @@ const Blacklist = {
                     updateBlacklist.penalty_end,
                     updateBlacklist.created_by,
                     updateBlacklist.note,
-                    CCCD,
+                    blacklistId,
                 ],
                 (error, results) => {
                     if (error) {
                         callback(error, null);
                         return;
                     }
-                    callback(null, { cccd: CCCD, ...updateBlacklist });
+                    callback(null, { id: blacklistId, ...updateBlacklist });
                 }
             );
         });
     },
 
-    deleteBlacklist: (CCCD, callback) => {
-        db.query('DELETE FROM blacklist WHERE cccd = ?', [CCCD], callback);
+    deleteBlacklist: (blacklistId, callback) => {
+        db.query('DELETE FROM blacklist WHERE id = ?', [blacklistId], callback);
     },
 };
 

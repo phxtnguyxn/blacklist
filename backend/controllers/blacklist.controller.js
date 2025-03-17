@@ -48,12 +48,12 @@ exports.updateBlacklist = (req, res) => {
 };
 
 exports.deleteBlacklist = (req, res) => {
-    const CCCD = req.params.cccd;
-    Blacklist.deleteBlacklist(CCCD, (err) => {
+    const blacklistId = req.params.id;
+    Blacklist.deleteBlacklist(blacklistId, (err) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
-        res.json({ message: 'Blacklist deleted!', CCCD });
+        res.json({ message: 'Blacklist deleted!', blacklistId });
     });
 
 };
