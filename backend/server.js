@@ -9,11 +9,12 @@ const app = express();
 app.use(cors({
     origin: 'http://localhost:4200',
     methods: 'GET,POST,PUT,DELETE',
-    allowedHeaders: 'Content-Type,Authorization'
+    allowedHeaders: 'Content-Type,Authorization',
+    credentials: true
 }));
 
 app.use(session({
-  secret: 'LGE', // Thay bằng secret key của bạn
+  secret: 'lgevh009851', // Thay bằng secret key của bạn
   resave: false,
   saveUninitialized: true,
   cookie: { secure: false } // Để `false` nếu không dùng HTTPS

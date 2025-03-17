@@ -1,28 +1,34 @@
-const AuthService = require("../services/auth.services");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const User = require("../models/user.model");
+require("dotenv").config();
 
 exports.login = (req, res) => {
     const { username, password } = req.body;
 
-    AuthService.login(username, password, (err, user) => {
-        if (err) return res.status(401).json({ message: err.message });
-        if (!req.session) {
-            return res.status(500).json({ message: "Session is not initialized" });
-        }
-
-        req.session.user = { id: user.id, username: user.username, role: user.role };
-        res.json({ message: "Login successful", user: req.session.user });
-    });
-};
-
-exports.checkLogin = (req, res) => {
-    if (req.session.user) {
-        return res.json({ isAuthenticated: true, user: req.session.user });
+    if (!username || !password) {
+        return res.status(400).json({ message: "❌ Vui lòng nhập đầy đủ thông tin!" });
     }
-    res.json({ isAuthenticated: false });
-};
 
-exports.logout = (req, res) => {
-    req.session.destroy(() => {
-        res.json({ message: "Logged out successfully" });
+    User.getUserByUsername(username, (err, user) => {
+        if (err) return res.status(500).json({ message: "❌ Lỗi server!", error: err });
+
+        if (!user) return res.status(400).json({ message: "❌ Sai tài khoản hoặc mật khẩu!" });
+
+        // Kiểm tra mật khẩu
+        bcrypt.compare(password, user.password, (err, isMatch) => {
+            if (err) return res.status(500).json({ message: "❌ Lỗi server!", error: err });
+
+            if (!isMatch) return res.status(400).json({ message: "❌ Sai tài khoản hoặc mật khẩu!" });
+
+            // Tạo JWT Token
+            const token = jwt.sign(
+                { id: user.id, username: user.username, role: user.role },
+                process.env.SECRET_KEY,
+                { expiresIn: "1h" }
+            );
+
+            res.json({ message: "✅ Đăng nhập thành công!", token });
+        });
     });
 };

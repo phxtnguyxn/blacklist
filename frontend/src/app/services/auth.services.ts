@@ -4,27 +4,26 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class AuthService {
   private apiUrl = 'http://localhost:3000/api/auth/login';
-  private router = inject(Router); 
+  private http = inject(HttpClient);
+  private router = inject(Router);
 
-  constructor(private http: HttpClient) {}
-
-  login(username: string, password: string): Observable<{ success: boolean }> {
-    return this.http.post<{ success: boolean }>(this.apiUrl, { username, password });
+  login(username: string, password: string): Observable<{ token: string }> {
+    return this.http.post<{ token: string }>(this.apiUrl, { username, password });
   }
 
-  logout(): void {
+  logout() {
+    localStorage.removeItem('token');
+    this.router.navigate(['/login']);
+  }
+
+  isAuthenticated(): boolean {
     if (typeof window !== 'undefined') {
-      localStorage.removeItem('isLoggedIn');
+      return !!localStorage.getItem('token');
     }
-    this.router.navigate(['/login']); 
-  }
-
-  isLoggedIn(): boolean {
-    if (typeof window === 'undefined') return false; // ✅ Fix lỗi khi chạy SSR
-    return localStorage.getItem('isLoggedIn') === 'true';
+    return false; // Nếu đang chạy trên server, trả về false
   }
 }

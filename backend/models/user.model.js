@@ -9,6 +9,13 @@ const User = {
     getUserById: (userName, callback) => {
         db.query("SELECT * FROM users WHERE username = ?", [userName], callback);
     },
+    
+    getUserByUsername: (username, callback) => {
+        db.query("SELECT * FROM users WHERE username = ?", [username], (err, results) => {
+            if (err) return callback(err, null);
+            callback(null, results.length > 0 ? results[0] : null);
+        });
+    },
 
     createUser: (userData, callback) => {
         const { username, password, fullname, role } = userData;
