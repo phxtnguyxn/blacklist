@@ -1,0 +1,50 @@
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` 
+PROCEDURE `search_blacklist`(
+    IN `cccd_input` VARCHAR(20), 
+    IN `fullname_input` VARCHAR(100), 
+    IN `checked_by_id` INT
+)
+BEGIN	
+    DECLARE found INT DEFAULT 0;
+    DECLARE violation_detail TEXT DEFAULT 'N/A';
+    DECLARE user_fullname VARCHAR(100) DEFAULT 'Unknown';
+
+    -- Kiểm tra xem checked_by_id có tồn tại trong bảng users không
+    IF NOT EXISTS (SELECT 1 FROM users WHERE id = checked_by_id) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Error: checked_by_id không tồn tại trong bảng users';
+    END IF;
+
+    -- Lấy fullname của user từ bảng users
+    SELECT fullname INTO user_fullname FROM users WHERE id = checked_by_id LIMIT 1;
+
+    -- Kiểm tra xem có dữ liệu trong blacklist không
+    SET found = (SELECT COUNT(*) FROM blacklist WHERE cccd = cccd_input OR fullname = fullname_input);
+
+    -- Nếu có dữ liệu thì lấy thông tin vi phạm
+    IF found > 0 THEN
+        SELECT IFNULL(violation, 'N/A') 
+        INTO violation_detail
+        FROM blacklist 
+        WHERE cccd = cccd_input OR fullname = fullname_input
+        LIMIT 1;
+    END IF;
+
+    -- Chèn vào logs (dùng checked_by_id thay vì fullname)
+    INSERT INTO logs (cccd, fullname, result, violation_detail, checked_at, checked_by)
+    VALUES (
+        cccd_input,
+        fullname_input,
+        IF(found > 0, 'Blacklist', 'Allowed'),
+        violation_detail,
+        NOW(), -- Lưu timestamp
+        checked_by_id -- Lưu ID của user kiểm tra (hợp lệ với FK)
+    );
+
+    -- Trả về kết quả search
+    SELECT cccd, fullname, violation, IF(found > 0, 'Blacklist', 'Allowed') AS result
+    FROM blacklist 
+    WHERE cccd = cccd_input OR fullname = fullname_input;
+END$$
+DELIMITER ;
