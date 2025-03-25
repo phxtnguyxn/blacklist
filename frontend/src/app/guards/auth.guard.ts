@@ -7,9 +7,9 @@ export const authGuard: CanActivateFn = () => {
   const router = inject(Router);
 
   if (authService.isAuthenticated()) {
-    return true;
+    return true; // Nếu đã đăng nhập, cho phép vào route
   }
 
   router.navigate(['/login']);
-  return false;
+  return true;
 };

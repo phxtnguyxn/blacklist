@@ -30,14 +30,13 @@ export class LoginComponent {
     }
 
     this.authService.login(this.username, this.password).subscribe({
-      next: (res) => {
-        if (typeof window !== 'undefined') {
-          localStorage.setItem('token', res.token);
-        }
+      next: (response) => {
+        console.log("Đăng nhập thành công!");
         this.router.navigate(['/home']);
       },
-      error: () => {
-        alert('Đăng nhập thất bại! Kiểm tra lại username và password.');
+      error: (err) => {
+        console.error("Lỗi đăng nhập:", err);
+        alert("Sai tài khoản hoặc mật khẩu!");
       }
     }); 
   }

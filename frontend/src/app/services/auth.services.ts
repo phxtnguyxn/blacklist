@@ -11,19 +11,36 @@ export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
 
-  login(username: string, password: string): Observable<{ token: string }> {
-    return this.http.post<{ token: string }>(this.apiUrl, { username, password });
+  // ✅ Login: Sau khi đăng nhập, lưu token và user vào sessionStorage
+  login(username: string, password: string): Observable<{ token: string, user: any }> {
+    return new Observable(observer => {
+      this.http.post<{ token: string, user: any }>(this.apiUrl, { username, password }).subscribe({
+        next: (response) => {
+          if (response.token) {
+            localStorage.setItem('token', response.token); // Lưu token vào localStorage
+            sessionStorage.setItem('user', JSON.stringify(response.user)); // Lưu user vào sessionStorage
+            observer.next(response);
+            observer.complete();
+          } else {
+            observer.error("Login thất bại!");
+          }
+        },
+        error: (err) => {
+          observer.error(err);
+        }
+      });
+    });
   }
 
+  // ✅ Logout: Xóa cả token và session
   logout() {
-    localStorage.removeItem('token');
+    localStorage.removeItem('token'); // Xóa token
+    sessionStorage.removeItem('user'); // Xóa user khỏi sessionStorage
     this.router.navigate(['/login']);
   }
 
+  // ✅ Kiểm tra trạng thái đăng nhập
   isAuthenticated(): boolean {
-    if (typeof window !== 'undefined') {
-      return !!localStorage.getItem('token');
-    }
-    return false; // Nếu đang chạy trên server, trả về false
+    return sessionStorage.getItem('user') !== null; // Kiểm tra user trong sessionStorage
   }
 }

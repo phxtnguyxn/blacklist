@@ -1,0 +1,14 @@
+<form (ngSubmit)="onSubmit()">
+    <!-- Ô input sử dụng Angular Material -->
+    <mat-form-field appearance="fill">
+      <mat-label>Họ tên hoặc CCCD</mat-label>
+      <input matInput placeholder="Nhập dữ liệu" [formControl]="searchData">
+    </mat-form-field>
+  
+    <!-- Nút Submit -->
+    <button mat-raised-button color="primary" type="submit">Tìm kiếm</button>
+  </form>
+  
+  <!-- Hiển thị dữ liệu nhập -->
+  <p>Bạn đã nhập: {{ searchData.value }}</p>
+  
