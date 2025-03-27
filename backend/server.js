@@ -31,6 +31,9 @@ app.use('/api/users', userRoutes);
 const blacklistRoutes = require('./routes/blacklist.routes');
 app.use('/api/blacklist', blacklistRoutes);
 
+const logsRoutes = require('./routes/logs.routes');
+app.use('/api/logs', logsRoutes);
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`✅ Server running at http://localhost:${PORT}`);

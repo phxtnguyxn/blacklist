@@ -7,7 +7,7 @@ import { GuardBlacklistComponent } from './pages/guard/blacklist/blacklist.compo
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'home', component: HomeComponent, canActivate: [authGuard] },
-  { path: '**', redirectTo: 'login' }, // Mặc định về login nếu đường dẫn không hợp lệ
-  { path: 'guard/blacklist', component: GuardBlacklistComponent, canActivate: [authGuard] } 
-
+  { path: 'guard/blacklist', component: GuardBlacklistComponent, canActivate: [authGuard] }, // Đưa lên trước
+  { path: '**', redirectTo: 'login' } // Luôn để ** ở cuối
 ];
+

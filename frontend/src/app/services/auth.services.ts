@@ -2,6 +2,8 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+
 
 @Injectable({
   providedIn: 'root'
@@ -11,36 +13,35 @@ export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
 
-  // ✅ Login: Sau khi đăng nhập, lưu token và user vào sessionStorage
   login(username: string, password: string): Observable<{ token: string, user: any }> {
-    return new Observable(observer => {
-      this.http.post<{ token: string, user: any }>(this.apiUrl, { username, password }).subscribe({
-        next: (response) => {
-          if (response.token) {
-            localStorage.setItem('token', response.token); // Lưu token vào localStorage
-            sessionStorage.setItem('user', JSON.stringify(response.user)); // Lưu user vào sessionStorage
-            observer.next(response);
-            observer.complete();
-          } else {
-            observer.error("Login thất bại!");
-          }
-        },
-        error: (err) => {
-          observer.error(err);
+    return this.http.post<{ token: string, user: any }>(this.apiUrl, { username, password }).pipe(
+      tap(response => {
+        if (response.token) {
+          localStorage.setItem('token', response.token);
+          sessionStorage.setItem('token', response.token); // ✅ Thêm vào sessionStorage
+          sessionStorage.setItem('user', JSON.stringify(response.user));
+          console.log("✅ Đã lưu token:", response.token);
         }
-      });
-    });
+      })
+    );
   }
+  
+  
 
   // ✅ Logout: Xóa cả token và session
   logout() {
     localStorage.removeItem('token'); // Xóa token
+    sessionStorage.removeItem('token'); // Xóa token khỏi sessionStorage
     sessionStorage.removeItem('user'); // Xóa user khỏi sessionStorage
     this.router.navigate(['/login']);
   }
 
   // ✅ Kiểm tra trạng thái đăng nhập
   isAuthenticated(): boolean {
-    return sessionStorage.getItem('user') !== null; // Kiểm tra user trong sessionStorage
+    const token = localStorage.getItem('token') && sessionStorage.getItem('token'); // ✅ Kiểm tra cả hai
+    console.log("Token trong AuthService:", token);
+    return !!token;
   }
+  
+  
 }

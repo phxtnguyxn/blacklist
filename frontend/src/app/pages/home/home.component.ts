@@ -16,4 +16,9 @@ export class HomeComponent {
   logout() {
     this.authService.logout();
   }
+
+  // 🛠 Hàm điều hướng đến trang blacklist
+  goToBlacklist() {
+    this.router.navigate(['/guard/blacklist']);
+  }
 }

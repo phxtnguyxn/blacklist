@@ -37,4 +37,20 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     transform: scale(1.05);
   }
+
+  .navigate-button {
+    background-color: #b30021;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+  }
   
+  .navigate-button:hover {
+    /* background-color: #ff4d4d; */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transform: scale(1.05);
+  } 
