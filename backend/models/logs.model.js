@@ -6,7 +6,7 @@ const Logs = {
     },
 
     getLogsWithConditions: ( startDate, endDate, callback ) => {
-        db.query('select * from logs where created_at between ? and ?', 
+        db.query('select * from logs where checked_at between ? and ?', 
             [startDate, endDate], callback);
     },
 };

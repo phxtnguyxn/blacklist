@@ -30,9 +30,9 @@ export class AuthService {
 
   // ✅ Logout: Xóa cả token và session
   logout() {
-    localStorage.removeItem('token'); // Xóa token
-    sessionStorage.removeItem('token'); // Xóa token khỏi sessionStorage
-    sessionStorage.removeItem('user'); // Xóa user khỏi sessionStorage
+    localStorage.removeItem('token'); 
+    sessionStorage.removeItem('token'); 
+    sessionStorage.removeItem('user'); 
     this.router.navigate(['/login']);
   }
 
