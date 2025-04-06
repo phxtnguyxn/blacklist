@@ -6,6 +6,7 @@ const db = require('./config/db');
 const session = require('express-session');
 
 const app = express();
+app.use(express.json());
 app.use(cors({
     origin: 'http://localhost:4200',
     methods: 'GET,POST,PUT,DELETE',
