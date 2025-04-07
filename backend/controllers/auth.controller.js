@@ -28,7 +28,16 @@ exports.login = (req, res) => {
                 { expiresIn: "1h" }
             );
 
-            res.json({ message: "✅ Đăng nhập thành công!", token });
+            res.json({
+                message: "✅ Đăng nhập thành công!",
+                token,
+                user: {
+                  id: user.id,
+                  username: user.username,
+                  fullname: user.fullname,
+                  role: user.role
+                }
+            });
         });
     });
 };

@@ -2,19 +2,19 @@
   <h2>Đăng Nhập</h2>
 
   <div class="input-group">
-    <input type="text" placeholder="Username"
+    <input type="text" placeholder="ID"
            [(ngModel)]="username"
            (keydown.enter)="login()" />
   </div>
 
   <div class="input-group">
-    <input [type]="showPassword ? 'text' : 'password'" placeholder="Password"
+    <input [type]="showPassword ? 'text' : 'password'" placeholder="Mật khẩu"
            [(ngModel)]="password"
            (keydown.enter)="login()" />
     <button type="button" class="toggle-password" (click)="togglePassword()">
-      {{ showPassword ? 'Hide' : 'Show' }}
+      {{ showPassword ? 'Ẩn' : 'Hiện' }}
     </button>
   </div>
 
-  <button class="login-button" (click)="login()">Login</button>
+  <button class="login-button" (click)="login()">Đăng nhập</button>
 </div>

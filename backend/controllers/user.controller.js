@@ -9,6 +9,16 @@ exports.getAllUsers = (req, res) => {
     });
 };
 
+exports.getUserRole = (req, res) => {
+    User.getUserRole((err, results) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        res.json(results); // chỉ cần trả dữ liệu
+    });
+};
+
+
 exports.getUserById = (req, res) => {
     const userId = req.params.id;
     User.getUserById( userId, (err, results) => {

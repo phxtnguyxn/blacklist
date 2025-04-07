@@ -19,6 +19,7 @@ export class AuthService {
         if (response.token) {
           localStorage.setItem('token', response.token);
           sessionStorage.setItem('token', response.token); // ✅ Thêm vào sessionStorage
+          console.log("🔍 User object trả về từ backend:", response.user);
           sessionStorage.setItem('user', JSON.stringify(response.user));
           console.log("✅ Đã lưu token:", response.token);
         }
@@ -38,10 +39,8 @@ export class AuthService {
 
   // ✅ Kiểm tra trạng thái đăng nhập
   isAuthenticated(): boolean {
-    const token = localStorage.getItem('token') && sessionStorage.getItem('token'); // ✅ Kiểm tra cả hai
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
     console.log("Token trong AuthService:", token);
     return !!token;
   }
-  
-  
 }

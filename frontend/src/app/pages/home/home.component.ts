@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.services';
 import { Router } from '@angular/router';
+import { TopNavbarComponent } from '../../components/navbar/top-navbar.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TopNavbarComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })

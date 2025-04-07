@@ -1,0 +1,37 @@
+<div class="container">
+    <h2>Quản lý Người dùng</h2>
+  
+    <!-- Form thêm người dùng -->
+    <div class="add-user-form">
+      <h3>Thêm người dùng mới</h3>
+      <input [(ngModel)]="newUser.username" placeholder="Tên đăng nhập" />
+      <input [(ngModel)]="newUser.password" placeholder="Mật khẩu" type="password" />
+      <input [(ngModel)]="newUser.fullname" placeholder="Họ và tên" />
+      <input [(ngModel)]="newUser.role" placeholder="Vai trò (admin, guard...)" />
+      <button class="add-btn" (click)="addUser()">Thêm</button>
+    </div>
+  
+    <!-- Danh sách người dùng -->
+    <table>
+      <thead>
+        <tr>
+          <th>Tên đăng nhập</th>
+          <th>Họ và tên</th>
+          <th>Vai trò</th>
+          <th>Thao tác</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td><input [(ngModel)]="user.username" placeholder="Username" /></td>
+          <td><input [(ngModel)]="user.fullname" placeholder="Họ và tên" /></td>
+          <td><input [(ngModel)]="user.role" placeholder="Vai trò" /></td>
+          <td class="action-buttons">
+            <button class="update-btn" (click)="updateUser(user)">Cập nhật</button>
+            <button class="delete-btn" (click)="deleteUser(user.id)">Xoá</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

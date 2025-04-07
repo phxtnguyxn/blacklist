@@ -9,6 +9,10 @@ const User = {
     getUserById: (userName, callback) => {
         db.query("SELECT * FROM users WHERE username = ?", [userName], callback);
     },
+
+    getUserRole: ( callback ) => {
+        db.query("SELECT DISTINCT role FROM users", callback);
+    },
     
     getUserByUsername: (username, callback) => {
         db.query("SELECT * FROM users WHERE username = ?", [username], (err, results) => {
