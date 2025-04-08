@@ -1,11 +1,17 @@
+<!-- home.component.html -->
 <app-top-navbar></app-top-navbar>
+<mat-sidenav-container class="main-container">
+  <mat-sidenav mode="side" opened class="sidebar">
+    <button mat-button routerLink="/home">Trang chủ</button>
+    <button mat-button routerLink="/guard/blacklist">Blacklist</button>
+  </mat-sidenav>
 
-<div class="home-container">
-  <h1>Welcome to Blacklist</h1>
-  <p>Bạn đã đăng nhập thành công!</p>
-
-  <!-- Nút chuyển hướng đến trang blacklist -->
-  <button class="navigate-button" (click)="goToBlacklist()">Đi đến Blacklist</button>
-
-  <button class="logout-button" (click)="logout()">Logout</button>
-</div>
+  <mat-sidenav-content class="main-content">
+    <div class="home-container">
+      <h1>Welcome to Blacklist</h1>
+      <p>Bạn đã đăng nhập thành công!</p>
+      <button class="navigate-button" (click)="goToBlacklist()">Đi đến Blacklist</button>
+      <button class="logout-button" (click)="logout()">Logout</button>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

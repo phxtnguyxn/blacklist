@@ -39,8 +39,13 @@ export class AuthService {
 
   // ✅ Kiểm tra trạng thái đăng nhập
   isAuthenticated(): boolean {
+    if (typeof window === 'undefined') {
+      return false; // Đang chạy trên server => không thể xác thực
+    }
+  
     const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-    console.log("Token trong AuthService:", token);
     return !!token;
   }
 }
+
+
