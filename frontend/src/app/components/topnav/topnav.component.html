@@ -1,0 +1,17 @@
+<div class="topnav">
+    <img src="/assets/logo.png" alt="Logo" class="logo" />
+  
+    <div class="search-bar">
+      <input type="text" placeholder="Search..." />
+      <mat-icon>search</mat-icon>
+    </div>
+  
+    <div class="user-actions">
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>account_circle</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="logout()">Logout</button>
+      </mat-menu>
+    </div>
+  </div>

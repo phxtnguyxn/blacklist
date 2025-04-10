@@ -3,8 +3,9 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
-import { TopNavbarComponent } from '../../components/navbar/top-navbar.component';
 import { AuthService } from '../../services/auth.services';
+import { TopnavComponent } from '../../components/topnav/topnav.component';
+import { SidenavComponent } from '../../components/sidenav/sidenav.component';
 
 @Component({
   selector: 'app-home',
@@ -13,7 +14,8 @@ import { AuthService } from '../../services/auth.services';
     CommonModule,
     MatSidenavModule,
     MatButtonModule,
-    TopNavbarComponent
+    TopnavComponent,
+    SidenavComponent
   ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
