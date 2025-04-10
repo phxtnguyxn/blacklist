@@ -31,6 +31,7 @@ export class LoginComponent {
     this.authService.login(this.username, this.password).subscribe({
       next: (response) => {
         console.log("Đăng nhập thành công!");
+        sessionStorage.setItem('username', this.username);
         this.router.navigate(['/home']);
       },
       error: (err) => {

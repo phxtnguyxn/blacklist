@@ -22,4 +22,12 @@ export class TopnavComponent {
     this.authService.logout();
     ;
   }
+
+  username: string = '';
+  ngOnInit(): void{
+    const storedUsername = sessionStorage.getItem('username');
+    if (storedUsername) {
+      this.username = storedUsername;
+    }
+  }
 }
