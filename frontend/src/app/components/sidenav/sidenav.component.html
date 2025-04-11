@@ -1,5 +1,5 @@
-<div *ngFor="let item of menu" class="sidenav-item">
+<div *ngFor="let item of menu" class="sidenav-item" [routerLink]="item.route" routerLinkActive="">
     <mat-icon class="sidenav-icon">{{ item.icon }}</mat-icon>
     <span>{{ item.label }}</span>
-  </div>
+</div>
   

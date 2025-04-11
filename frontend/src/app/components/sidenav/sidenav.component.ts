@@ -12,7 +12,7 @@ import { RouterModule } from '@angular/router';
 })
 export class SidenavComponent {
   menu = [
-    { icon: 'map', label: 'Site Map', route: '/site-map' },
+    { icon: 'person', label: 'User', route: '/admin-user' },
     { icon: 'shield', label: 'Security Status', route: '/security-status' },
     { icon: 'login', label: 'Entrance', route: '/entrance' },
     { icon: 'inventory_2', label: 'Assets', route: '/assets' },
