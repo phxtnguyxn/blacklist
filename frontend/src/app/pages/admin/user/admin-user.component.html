@@ -1,29 +1,51 @@
-<div class="container">
-  <h2>Quản lý Người dùng</h2>
 
-  <div class="add-user-form">
-    <input type="text" placeholder="Tên đăng nhập" [(ngModel)]="newUser.username">
-    <input type="password" placeholder="Mật khẩu" [(ngModel)]="newUser.password">
-    <input type="text" placeholder="Họ và tên" [(ngModel)]="newUser.fullName">
-    <input type="text" placeholder="Vai trò (admin, guard...)" [(ngModel)]="newUser.role">
-    <button class="btn add-btn" (click)="addUser()">Thêm</button>
-  </div>
 
-  <div class="user-table">
-    <div class="user-row user-header">
-      <div>Tên đăng nhập</div>
-      <div>Họ và tên</div>
-      <div>Vai trò</div>
-      <div>Thao tác</div>
-    </div>
+<app-topnav></app-topnav>
 
-    <div class="user-row" *ngFor="let user of users">
-      <div><input [(ngModel)]="user.username" /></div>
-      <div><input [(ngModel)]="user.fullName" /></div>
-      <div><input [(ngModel)]="user.role" /></div>
-      <div class="action-buttons">
-        <button class="btn update-btn" (click)="updateUser(user)">Cập nhật</button>
-        <button class="btn delete-btn" (click)="deleteUser(user)">Xoá</button>
+<div class="layout-container">
+  <app-sidenav></app-sidenav>
+
+  <div class="main-content">
+    <div class="container">
+      <h2>Quản lý Người dùng</h2>
+    
+      <div class="add-user-form">
+        <input type="text" placeholder="Tên đăng nhập" [(ngModel)]="newUser.username">
+        <input type="password" placeholder="Mật khẩu" [(ngModel)]="newUser.password">
+        <input type="text" placeholder="Họ và tên" [(ngModel)]="newUser.fullname">
+        <input type="text" placeholder="Vai trò (admin, guard...)" [(ngModel)]="newUser.role">
+        <button class="btn add-btn" (click)="addUser()">Thêm</button>
+      </div>
+    
+      <div class="user-table">
+        <div class="user-row user-header">
+          <div>Tên đăng nhập</div>
+          <div>Họ và tên</div>
+          <div>Vai trò</div>
+          <div>Thao tác</div>
+        </div>
+    
+        <div class="user-row" *ngFor="let user of users">
+          <div>
+            <label>
+              <input [(ngModel)]="user.username" placeholder="Nhập tên đăng nhập" />
+            </label>
+          </div>
+          <div>
+            <label>
+              <input [(ngModel)]="user.fullname" placeholder="Nhập họ và tên"/>
+            </label>
+          </div>
+          <div>
+            <label>
+              <input [(ngModel)]="user.role" placeholder="Nhập vai trò" />
+            </label>
+          </div>
+          <div class="action-buttons">
+            <button class="btn update-btn" (click)="updateUser(user)">Cập nhật</button>
+            <button class="btn delete-btn" (click)="deleteUser(user)">Xoá</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>

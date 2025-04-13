@@ -21,8 +21,8 @@ const User = {
         });
     },
 
-    createUser: (userData, callback) => {
-        const { username, password, fullname, role } = userData;
+    createUser: (newUser, callback) => {
+        const { username, password, fullname, role } = newUser;
 
         // Mã hóa mật khẩu trước khi lưu
         bcrypt.hash(password, 10, (err, hashedPassword) => {

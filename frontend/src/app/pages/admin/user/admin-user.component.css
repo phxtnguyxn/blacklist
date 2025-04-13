@@ -1,6 +1,6 @@
 :host {
   display: block;
-  padding: 2rem;
+  padding: 0;
   background-color: #f8f8f8;
   font-family: 'Segoe UI', sans-serif;
 }
@@ -62,6 +62,7 @@ h2 {
   padding: 12px 16px;
   border-bottom: 1px solid #f0f0f0;
   align-items: center;
+  justify-items: center;
 }
 
 .user-row:last-child {
@@ -104,4 +105,20 @@ h2 {
 
 .delete-btn:hover {
   background-color: #a0001c;
+}
+
+/* Container chứa sidenav và nội dung */
+.layout-container {
+  display: flex;
+  height: calc(100vh - 64px); /* Giả sử topnav cao 64px */
+  overflow: hidden;
+}
+
+/* Nội dung chính */
+.main-content {
+  flex-grow: 1;
+  padding: 24px;
+  background-color: #f9f9f9;
+  overflow-y: auto;
+  color: #333333;
 }

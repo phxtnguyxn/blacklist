@@ -10,6 +10,6 @@ export const routes: Routes = [
   { path: 'admin-user', component: AdminUserComponent, canActivate: [authGuard]},
   { path: 'home', component: HomeComponent, canActivate: [authGuard] },
   { path: 'guard/blacklist', component: GuardBlacklistComponent, canActivate: [authGuard] }, // Đưa lên trước
-  { path: '**', redirectTo: 'login' } // Luôn để ** ở cuối
+  { path: '**', redirectTo: 'login' }, // Luôn để ** ở cuối
 ];
 

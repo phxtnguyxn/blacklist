@@ -2,12 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { TopnavComponent } from '../../../components/topnav/topnav.component';
+import { SidenavComponent } from '../../../components/sidenav/sidenav.component';
 
 interface User {
   id?: number;
   username: string;
   password?: string;
-  fullName: string;
+  fullname: string;
   role: string;
 }
 
@@ -16,14 +18,14 @@ interface User {
   standalone: true,
   templateUrl: './admin-user.component.html',
   styleUrls: ['./admin-user.component.css'],
-  imports: [CommonModule, FormsModule]
+  imports: [CommonModule, FormsModule, TopnavComponent, SidenavComponent]
 })
 export class AdminUserComponent implements OnInit {
   users: User[] = [];
   newUser: User = {
     username: '',
     password: '',
-    fullName: '',
+    fullname: '',
     role: ''
   };
 
@@ -41,7 +43,7 @@ export class AdminUserComponent implements OnInit {
   addUser() {
     this.http.post('http://localhost:3000/api/users', this.newUser)
       .subscribe(() => {
-        this.newUser = { username: '', password: '', fullName: '', role: '' };
+        this.newUser = { username: '', password: '', fullname: '', role: '' };
         this.getUsers();
       });
   }

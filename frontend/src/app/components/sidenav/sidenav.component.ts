@@ -12,8 +12,8 @@ import { RouterModule } from '@angular/router';
 })
 export class SidenavComponent {
   menu = [
-    { icon: 'person', label: 'User', route: '/admin-user' },
-    { icon: 'shield', label: 'Security Status', route: '/security-status' },
+    { icon: 'person', label: 'Người dùng', route: '/admin-user' },
+    { icon: 'shield', label: 'Danh sách đen', route: '/security-status' },
     { icon: 'login', label: 'Entrance', route: '/entrance' },
     { icon: 'inventory_2', label: 'Assets', route: '/assets' },
     { icon: 'language', label: 'Network Security', route: '/network-security' },
