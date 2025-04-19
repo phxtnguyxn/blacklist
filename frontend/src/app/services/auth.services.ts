@@ -18,14 +18,14 @@ export class AuthService {
       tap(response => {
         if (response.token) {
           localStorage.setItem('token', response.token);
-          sessionStorage.setItem('token', response.token); // ✅ Thêm vào sessionStorage
-          console.log("🔍 User object trả về từ backend:", response.user);
+          sessionStorage.setItem('token', response.token);
           sessionStorage.setItem('user', JSON.stringify(response.user));
-          console.log("✅ Đã lưu token:", response.token);
+          sessionStorage.setItem('role', response.user.role); // Lưu vai trò
         }
       })
     );
   }
+  
   
   
 
