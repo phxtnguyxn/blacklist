@@ -11,7 +11,10 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./sidenav.component.css']
 })
 export class SidenavComponent {
-  menu = [
+  role: string = '';
+  menu: any[] = [];
+
+  adminMenu = [
     { icon: 'person', label: 'Người dùng', route: '/admin-user' },
     { icon: 'shield', label: 'Danh sách đen', route: '/security-status' },
     { icon: 'login', label: 'Entrance', route: '/entrance' },
@@ -20,4 +23,20 @@ export class SidenavComponent {
     { icon: 'smartphone', label: 'PC/Mobile Security', route: '/pc-mobile-security' },
     { icon: 'more_horiz', label: 'Etc', route: '/etc' }
   ];
+
+  guardMenu = [
+    { icon: 'login', label: 'Entrance', route: '/entrance' },
+    { icon: 'shield', label: 'Danh sách đen', route: '/security-status' }
+  ];
+
+  ngOnInit() {
+    const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+    this.role = user.role;
+
+    if (this.role === 'Admin') {
+      this.menu = this.adminMenu;
+    } else if (this.role === 'Guard') {
+      this.menu = this.guardMenu;
+    }
+  }
 }
