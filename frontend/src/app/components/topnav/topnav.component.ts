@@ -30,4 +30,8 @@ export class TopnavComponent {
       this.username = storedUsername;
     }
   }
+
+  goHome() {
+    this.router.navigate(['/home']);
+  }
 }

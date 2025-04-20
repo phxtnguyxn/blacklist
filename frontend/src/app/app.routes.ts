@@ -6,6 +6,7 @@ import { roleGuard } from './guards/role.guard'; // ✅ Import roleGuard
 import { GuardBlacklistComponent } from './pages/guard/blacklist/blacklist.component';
 import { AdminUserComponent } from './pages/admin/user/admin-user.component';
 import { UnauthorizedComponent } from './pages/unauthorized/unauthorized.component'; // ✅ Import UnauthorizedComponent
+import { NotFoundRedirectComponent } from './components/handling/error_path.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -30,5 +31,8 @@ export const routes: Routes = [
     path: 'unauthorized',
     component: UnauthorizedComponent // ✅ Trang hiển thị khi không có quyền truy cập
   },
-  { path: '**', redirectTo: 'login' } // Luôn để ** ở cuối
+  { 
+    path: '**', 
+    component: NotFoundRedirectComponent
+  } // Luôn để ** ở cuối
 ];

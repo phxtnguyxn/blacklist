@@ -12,11 +12,11 @@
     display: flex;
     align-items: center;
     padding: 12px 16px;
-    font-size: 11px;
+    font-size: 15px;
     cursor: pointer;
     transition: background 0.2s ease;
     border-bottom: 1px solid rgba(34, 36, 38, .15);
-    height: 60px;
+    height: 80px;
   }
   
   .sidenav-item:hover {

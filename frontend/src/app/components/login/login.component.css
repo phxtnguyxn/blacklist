@@ -77,3 +77,18 @@ input:focus {
 .success {
     color: #2ECC71; /* Xanh thành công */
 }
+
+/* Ẩn icon mắt mặc định của các trình duyệt hiện đại */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
+
+input[type="password"]::-webkit-credentials-auto-fill-button,
+input[type="password"]::-webkit-contacts-auto-fill-button {
+  visibility: hidden;
+  display: none !important;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+}
