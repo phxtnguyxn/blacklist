@@ -3,7 +3,7 @@ import { LoginComponent } from './components/login/login.component';
 import { HomeComponent } from './pages/home/home.component';
 import { authGuard } from './guards/auth.guard';
 import { roleGuard } from './guards/role.guard'; // ✅ Import roleGuard
-import { GuardBlacklistComponent } from './pages/guard/blacklist/blacklist.component';
+import { BlacklistComponent } from './pages/admin/blacklist/blacklist.component';
 import { AdminUserComponent } from './pages/admin/user/admin-user.component';
 import { UnauthorizedComponent } from './pages/unauthorized/unauthorized.component'; // ✅ Import UnauthorizedComponent
 import { NotFoundRedirectComponent } from './components/handling/error_path.component';
@@ -17,10 +17,10 @@ export const routes: Routes = [
     data: { roles: ['Admin'] } // ✅ Chỉ cho phép vai trò 'admin'
   },
   {
-    path: 'guard/blacklist',
-    component: GuardBlacklistComponent,
+    path: 'blacklist',
+    component: BlacklistComponent,
     canActivate: [authGuard, roleGuard],
-    data: { roles: ['Guard', 'Staff'] } // ✅ Cho phép vai trò 'guard' và 'staff'
+    data: { roles: ['Admin', 'Staff'] } // ✅ Cho phép vai trò 'guard' và 'staff'
   },
   {
     path: 'home',

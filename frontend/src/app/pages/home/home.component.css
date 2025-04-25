@@ -2,6 +2,9 @@
 :host {
   display: block;
   height: 100vh;
+  padding: 0;
+  background-color: #f8f8f8;
+  font-family: 'Segoe UI', sans-serif;
 }
 
 /* Container chứa sidenav và nội dung */

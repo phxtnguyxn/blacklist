@@ -1,0 +1,49 @@
+<div class="blacklist-container">
+  <h2>Quản lý Danh sách đen</h2>
+
+  <div class="search-section">
+    <input type="text" placeholder="Tìm theo CCCD" [(ngModel)]="searchModel.cccd">
+    <input type="text" placeholder="Tìm theo Họ tên" [(ngModel)]="searchModel.fullname">
+    <input type="text" placeholder="Tìm theo người tạo (ID)" [(ngModel)]="searchModel.checked_by_id">
+    <button (click)="search()">Tìm kiếm</button>
+    <button class="add-button" (click)="openAddModal()">+ Thêm mới</button>
+  </div>
+
+  <table class="blacklist-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>CCCD</th>
+        <th>Họ và tên</th>
+        <th>Công ty</th>
+        <th>Vi phạm</th>
+        <th>Ngày bắt đầu</th>
+        <th>Ngày kết thúc</th>
+        <th>Người tạo</th>
+        <th>Ngày tạo</th>
+        <th>Ghi chú</th>
+        <th>Thao tác</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let entry of blacklist">
+        <td>{{ entry.id }}</td>
+        <td>{{ entry.cccd }}</td>
+        <td>{{ entry.fullname }}</td>
+        <td>{{ entry.company }}</td>
+        <td>{{ entry.violation }}</td>
+        <td>{{ entry.penalty_start | date }}</td>
+        <td>{{ entry.penalty_end | date }}</td>
+        <td>{{ entry.created_by }}</td>
+        <td>{{ entry.created_at | date:'short' }}</td>
+        <td>{{ entry.note }}</td>
+        <td>
+          <button (click)="edit(entry)">Sửa</button>
+          <button class="danger" (click)="delete(entry.id)">Xoá</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="blacklist.length === 0" class="no-data">Không có kết quả nào.</div>
+</div>
