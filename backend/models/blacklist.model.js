@@ -60,14 +60,13 @@ const Blacklist = {
 
     searchBlacklist: (cccd, fullname, checked_by_id, callback) => {
         db.query(
-            "call search_blacklist(?, ?, ?)",
+            'CALL search_blacklist(?, ?, ?)',
             [cccd || '', fullname || '', checked_by_id],
             (err, results) => {
-                if (err) {
-                    callback(err, null);
-                    return;
-                }
-                callback(null, results[0]);
+                if (err) return callback(err, null);
+
+                // Trả về mảng kết quả đầu tiên nếu có
+                callback(null, results[0] || []);
             }
         );
     },

@@ -1,80 +1,96 @@
 .blacklist-container {
-    padding: 24px;
-    font-family: "Segoe UI", sans-serif;
-    background-color: #fff;
-  }
-  
-  h2 {
-    font-size: 24px;
-    margin-bottom: 16px;
-  }
-  
-  .search-section {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    margin-bottom: 16px;
-  }
-  
-  .search-section input {
-    padding: 8px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    width: 200px;
-  }
-  
-  .search-section button {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 6px;
-    background-color: #004aad;
-    color: white;
-    cursor: pointer;
-    transition: 0.2s ease;
-  }
-  
-  .search-section .add-button {
-    background-color: #880808;
-  }
-  
-  .search-section button:hover {
-    opacity: 0.9;
-  }
-  
-  .blacklist-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 12px;
-  }
-  
-  .blacklist-table th,
-  .blacklist-table td {
-    padding: 10px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-    font-size: 14px;
-  }
-  
-  .blacklist-table th {
-    background-color: #f2f2f2;
-  }
-  
-  .blacklist-table td button {
-    margin-right: 6px;
-    padding: 4px 8px;
-    border-radius: 4px;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .blacklist-table td .danger {
-    background-color: #d9534f;
-    color: white;
-  }
-  
-  .no-data {
-    margin-top: 20px;
-    text-align: center;
-    color: gray;
-  }
-  
+  padding: 24px;
+  font-family: "Segoe UI", sans-serif;
+  background-color: #fff;
+  display: flex;
+  height: calc(100vh - 64px); /* Giả sử topnav cao 64px */
+  overflow: hidden;
+}
+
+h2 {
+  font-size: 24px;
+  margin-bottom: 16px;
+  color: #333;
+}
+
+.search-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.search-section input {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  width: 200px;
+}
+
+.search-section button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  background-color: #004aad;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.search-section .add-button {
+  background-color: #880808;
+}
+
+.search-section button:hover {
+  background-color: #00357a;
+}
+
+.blacklist-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+}
+
+.blacklist-table th,
+.blacklist-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.blacklist-table th {
+  background-color: #f2f2f2;
+  color: #444;
+}
+
+.blacklist-table td button {
+  margin-right: 6px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}
+
+.blacklist-table td button:hover {
+  opacity: 0.9;
+}
+
+.blacklist-table td .danger {
+  background-color: #d9534f;
+  color: white;
+}
+
+.no-data {
+  margin-top: 20px;
+  text-align: center;
+  color: gray;
+}
+
+.main-content {
+  flex-grow: 1;
+  padding: 24px;
+  background-color: #f9f9f9;
+  overflow-y: auto;
+  color: #333333;
+}

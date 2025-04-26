@@ -38,22 +38,41 @@ exports.addBlacklist = (req, res) => {
 
 exports.searchBlacklist = (req, res) => {
     const { cccd, fullname } = req.body;
-    const checked_by_id = parseInt(req.params.id, 10); // Ép kiểu sang số nguyên
+    const checked_by_id = parseInt(req.params.id, 10);
 
+    // Kiểm tra dữ liệu đầu vào
     if (!cccd && !fullname) {
-        return res.status(400).json({ message: "Vui lòng nhập CCCD hoặc fullname để tìm kiếm!" });
+        return res.status(400).json({
+            success: false,
+            message: 'Vui lòng nhập CCCD hoặc Họ tên để tìm kiếm.'
+        });
     }
 
     if (isNaN(checked_by_id)) {
-        return res.status(400).json({ message: "ID người kiểm tra không hợp lệ!" });
+        return res.status(400).json({
+            success: false,
+            message: 'ID người kiểm tra không hợp lệ.'
+        });
     }
 
+    // Gọi hàm từ model
     Blacklist.searchBlacklist(cccd, fullname, checked_by_id, (err, result) => {
         if (err) {
-            console.error("Error searching blacklist: ", err);
-            return res.status(500).json({ message: "Lỗi máy chủ!" });
+            console.error('Lỗi khi tìm kiếm blacklist:', err);
+            return res.status(500).json({
+                success: false,
+                message: 'Đã xảy ra lỗi máy chủ.'
+            });
         }
-        res.json({ success: true, result });
+
+        return res.status(200).json({
+            success: true,
+            result: result.length ? result : [{
+                cccd: cccd || 'N/A',
+                fullname: fullname || 'N/A',
+                result: 'Allowed'
+            }]
+        });
     });
 };
 

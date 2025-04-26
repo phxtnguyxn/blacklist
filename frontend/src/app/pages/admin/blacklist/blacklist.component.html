@@ -1,15 +1,18 @@
+<app-topnav></app-topnav>
+
 <div class="blacklist-container">
+  <app-sidenav></app-sidenav>
   <h2>Quản lý Danh sách đen</h2>
 
   <div class="search-section">
-    <input type="text" placeholder="Tìm theo CCCD" [(ngModel)]="searchModel.cccd">
-    <input type="text" placeholder="Tìm theo Họ tên" [(ngModel)]="searchModel.fullname">
-    <input type="text" placeholder="Tìm theo người tạo (ID)" [(ngModel)]="searchModel.checked_by_id">
-    <button (click)="search()">Tìm kiếm</button>
+    <input type="text" placeholder="Tìm theo CCCD" [(ngModel)]="searchModel.cccd" />
+    <input type="text" placeholder="Tìm theo Họ tên" [(ngModel)]="searchModel.fullname" />
+    <input type="text" placeholder="Người tìm kiếm (user ID)" [(ngModel)]="searchModel.checked_by_id" />
+    <button (click)="search()">🔍 Tìm kiếm</button>
     <button class="add-button" (click)="openAddModal()">+ Thêm mới</button>
   </div>
 
-  <table class="blacklist-table">
+  <table class="blacklist-table" *ngIf="blacklist.length > 0">
     <thead>
       <tr>
         <th>ID</th>
@@ -32,10 +35,10 @@
         <td>{{ entry.fullname }}</td>
         <td>{{ entry.company }}</td>
         <td>{{ entry.violation }}</td>
-        <td>{{ entry.penalty_start | date }}</td>
-        <td>{{ entry.penalty_end | date }}</td>
+        <td>{{ entry.penalty_start | date: 'dd/MM/yyyy' }}</td>
+        <td>{{ entry.penalty_end | date: 'dd/MM/yyyy' }}</td>
         <td>{{ entry.created_by }}</td>
-        <td>{{ entry.created_at | date:'short' }}</td>
+        <td>{{ entry.created_at | date: 'short' }}</td>
         <td>{{ entry.note }}</td>
         <td>
           <button (click)="edit(entry)">Sửa</button>
