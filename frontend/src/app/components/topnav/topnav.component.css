@@ -5,7 +5,7 @@
     height: 60px;
     padding: 10 20px;
     background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    /*box-shadow: 0 2px 4px rgba(0,0,0,0.1);*/
     border-bottom: 1px solid rgba(34, 36, 38, .15);
   }
   .logo {

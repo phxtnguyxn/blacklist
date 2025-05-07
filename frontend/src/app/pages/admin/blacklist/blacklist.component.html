@@ -47,9 +47,10 @@
             </label>
           </div>
           <div>
-            <label>
+            <div class="tooltip-wrapper">
               <input [(ngModel)]="item.violation" placeholder="Nhập lỗi vi phạm" />
-            </label>
+              <span class="custom-tooltip">{{ item.violation }}</span>
+            </div>
           </div>
           <div>
             <label>
@@ -72,9 +73,10 @@
             </label>
           </div>
           <div>
-            <label>
+            <div class="tooltip-wrapper">
               <input [(ngModel)]="item.note" placeholder="Nhập ghi chú" />
-            </label>
+              <span class="custom-tooltip">{{ item.note }}</span>
+            </div>
           </div>
           <div>
             <button (click)="editBlacklist(item)">Sửa</button>

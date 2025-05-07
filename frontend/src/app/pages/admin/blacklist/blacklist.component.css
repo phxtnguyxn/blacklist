@@ -63,9 +63,10 @@
 
 .blacklist-row {
   display: grid;
-  grid-template-columns: 50px 120px 150px 120px 160px 120px 120px 100px 150px 200px 130px;
+  grid-template-columns: 40px 120px 150px 80px 200px 200px 200px 40px 200px 250px 130px;
   align-items: center;
-  padding: 10px;
+  justify-items: center;
+  padding: 12px 16px;
   border-bottom: 1px solid #ddd;
 }
 
@@ -80,6 +81,57 @@
   padding: 4px 8px;
   text-align: center;
 }
+
+.blacklist-row input {
+  width: 100%;
+  padding: 6px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: #fcfcfc;
+}
+
+/*---------------*/
+
+.tooltip-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.tooltip-wrapper input {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Tooltip tùy chỉnh */
+.custom-tooltip {
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+  position: absolute;
+  top: 120%;
+  left: 0;
+  z-index: 10;
+  background-color: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 6px;
+  white-space: normal;
+  min-width: 150px;
+  max-width: 300px;
+  font-size: 13px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  word-break: break-word;
+}
+
+.tooltip-wrapper:hover .custom-tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
+/*---------------*/
 
 /* Nút hành động */
 .blacklist-row button {
