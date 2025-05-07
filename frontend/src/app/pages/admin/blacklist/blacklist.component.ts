@@ -1,75 +1,64 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TopnavComponent } from '../../../components/topnav/topnav.component';
 import { SidenavComponent } from '../../../components/sidenav/sidenav.component';
+
+
+interface Blacklist {
+  id?: number;
+  cccd: string;
+  fullname: string;
+  company: string;
+  violation: string;
+  penalty_start: string;
+  penalty_end: string;
+  created_by: string;
+  created_at: string;
+  note: string;
+}
 
 @Component({
   selector: 'app-blacklist',
   standalone: true,
   imports: [CommonModule, FormsModule, TopnavComponent, SidenavComponent],
   templateUrl: './blacklist.component.html',
-  styleUrls: ['./blacklist.component.css'],
-  providers: [DatePipe]
+  styleUrls: ['./blacklist.component.css']
 })
 export class BlacklistComponent implements OnInit {
-  blacklist: any[] = [];
-
-  searchModel = {
+  blacklist: Blacklist[] = [];
+  newBlacklist: Blacklist = {
     cccd: '',
     fullname: '',
-    checked_by_id: ''
+    company: '',
+    violation: '',
+    penalty_start: '',
+    penalty_end: '',
+    created_by: '',
+    created_at: '',
+    note: ''
   };
 
   constructor(private http: HttpClient) {}
 
-  ngOnInit(): void {
-    this.getAllBlacklist();
+  ngOnInit() {
+    this.getBlacklist();
   }
 
-  getAllBlacklist(): void {
-    this.http.get<any[]>('/api/blacklist').subscribe(data => {
-      this.blacklist = data;
-    });
+  getBlacklist() {
+    this.http.get<Blacklist[]>('http://localhost:3000/api/blacklist')
+      .subscribe(data => this.blacklist = data);
   }
 
-  search(): void {
-    const { cccd, fullname, checked_by_id } = this.searchModel;
-
-    if (!checked_by_id?.trim()) {
-      alert('Vui lòng nhập ID người tìm kiếm (User ID).');
-      return;
-    }
-
-    // Gọi API với user ID được đính kèm query param
-    const queryParams = `?user_id=${encodeURIComponent(checked_by_id.trim())}`;
-
-    const body = {
-      cccd: cccd?.trim(),
-      fullname: fullname?.trim()
-    };
-
-    this.http.post<any[]>(`/api/blacklist/search${queryParams}`, body).subscribe(data => {
-      this.blacklist = data;
-    });
+  editBlacklist(blacklist: Blacklist) {
+    this.http.put(`http://localhost:3000/api/blacklist/${blacklist.id}`, blacklist)
+      .subscribe(() => this.getBlacklist());
   }
 
-  edit(entry: any): void {
-    console.log('Edit entry:', entry);
-    // TODO: Hiển thị form sửa
-  }
-
-  delete(id: number): void {
-    if (confirm('Bạn có chắc muốn xoá mục này không?')) {
-      this.http.delete(`/api/blacklist/${id}`).subscribe(() => {
-        this.blacklist = this.blacklist.filter(item => item.id !== id);
-      });
-    }
-  }
-
-  openAddModal(): void {
-    console.log('Open add modal');
-    // TODO: Hiển thị modal thêm mới
+  deleteBlacklist(blacklist: Blacklist) {
+    this.http.delete(`http://localhost:3000/api/blacklist/${blacklist.id}`)
+      .subscribe(() => this.getBlacklist());
   }
 }
+
