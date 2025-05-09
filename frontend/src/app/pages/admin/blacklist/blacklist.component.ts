@@ -51,14 +51,33 @@ export class BlacklistComponent implements OnInit {
       .subscribe(data => this.blacklist = data);
   }
 
-  editBlacklist(blacklist: Blacklist) {
-    this.http.put(`http://localhost:3000/api/blacklist/${blacklist.id}`, blacklist)
-      .subscribe(() => this.getBlacklist());
+  popupMessage: string | null = null;
+
+  showPopup(message: string) {
+    this.popupMessage = message;
+    setTimeout(() => this.popupMessage = null, 3000); 
   }
 
+  editBlacklist(blacklist: Blacklist) {
+    this.http.put(`http://localhost:3000/api/blacklist/${blacklist.id}`, blacklist)
+      .subscribe({
+        next: () => {
+          this.getBlacklist();
+          this.showPopup('Sửa thành công!');
+        },
+        error: () => this.showPopup('Sửa thất bại!')
+      });
+  }
+  
   deleteBlacklist(blacklist: Blacklist) {
     this.http.delete(`http://localhost:3000/api/blacklist/${blacklist.id}`)
-      .subscribe(() => this.getBlacklist());
+      .subscribe({
+        next: () => {
+          this.getBlacklist();
+          this.showPopup('Xóa thành công!');
+        },
+        error: () => this.showPopup('Xóa thất bại!')
+      });
   }
 }
 

@@ -13,12 +13,17 @@
         <input type="text" placeholder="Tên đăng nhập" [(ngModel)]="newUser.username">
         <input type="password" placeholder="Mật khẩu" [(ngModel)]="newUser.password">
         <input type="text" placeholder="Họ và tên" [(ngModel)]="newUser.fullname">
-        <input type="text" placeholder="Vai trò (admin, guard...)" [(ngModel)]="newUser.role">
+        <select [(ngModel)]="newUser.role">
+          <option value="" disabled selected>Chọn vai trò</option>
+          <option value="admin">Admin</option>
+          <option value="guard">Guard</option>
+        </select>
         <button class="btn add-btn" (click)="addUser()">Thêm</button>
       </div>
     
       <div class="user-table">
         <div class="user-row user-header">
+          <div>ID</div>
           <div>Tên đăng nhập</div>
           <div>Mật Khẩu</div>
           <div>Họ và tên</div>
@@ -27,6 +32,11 @@
         </div>
     
         <div class="user-row" *ngFor="let user of users">
+          <div>
+            <label>
+              <input [(ngModel)]="user.id" readonly />
+            </label>
+          </div>
           <div>
             <label>
               <input [(ngModel)]="user.username" placeholder="Nhập tên đăng nhập" />
@@ -55,4 +65,9 @@
       </div>
     </div>
   </div>
+</div>
+
+
+<div class="popup-notification" *ngIf="popupMessage">
+  {{ popupMessage }}
 </div>

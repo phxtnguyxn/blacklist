@@ -40,21 +40,44 @@ export class AdminUserComponent implements OnInit {
       .subscribe(data => this.users = data);
   }
 
+  popupMessage: string | null = null;
+
+  showPopup(message: string) {
+    this.popupMessage = message;
+    setTimeout(() => this.popupMessage = null, 3000); 
+  }
+
   addUser() {
     this.http.post('http://localhost:3000/api/users', this.newUser)
-      .subscribe(() => {
-        this.newUser = { username: '', password: '', fullname: '', role: '' };
-        this.getUsers();
+      .subscribe({
+        next: () => {
+          this.newUser = { username: '', password: '', fullname: '', role: '' };
+          this.getUsers();
+          this.showPopup('Thêm người dùng thành công!');
+        },
+        error: () => this.showPopup('Thêm người dùng thất bại!')
       });
   }
 
   updateUser(user: User) {
     this.http.put(`http://localhost:3000/api/users/${user.id}`, user)
-      .subscribe(() => this.getUsers());
+      .subscribe({
+        next: () => {
+          this.getUsers();
+          this.showPopup('Sửa người dùng thành công!');
+        },
+        error: () => this.showPopup('Sửa người dùng thất bại!')
+      });
   }
 
   deleteUser(user: User) {
     this.http.delete(`http://localhost:3000/api/users/${user.id}`)
-      .subscribe(() => this.getUsers());
+      .subscribe({
+        next: () => {
+          this.getUsers();
+          this.showPopup('Xóa người dùng thành công!');
+        },
+        error: () => this.showPopup('Xóa người dùng thất bại!')
+      });
   }
 }
