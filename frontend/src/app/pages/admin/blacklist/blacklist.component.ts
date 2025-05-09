@@ -12,10 +12,10 @@ interface Blacklist {
   fullname: string;
   company: string;
   violation: string;
-  penalty_start: string;
-  penalty_end: string;
+  penalty_start: Date;
+  penalty_end: Date;
   created_by: string;
-  created_at: string;
+  created_at: Date;
   note: string;
 }
 
@@ -33,10 +33,10 @@ export class BlacklistComponent implements OnInit {
     fullname: '',
     company: '',
     violation: '',
-    penalty_start: '',
-    penalty_end: '',
+    penalty_start: new Date(),
+    penalty_end: new Date(),
     created_by: '',
-    created_at: '',
+    created_at: new Date(),
     note: ''
   };
 
