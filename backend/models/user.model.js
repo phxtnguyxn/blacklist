@@ -6,13 +6,13 @@ const User = {
         db.query("SELECT * FROM users", callback);
     },
 
-    getUserById: (userName, callback) => {
-        db.query("SELECT * FROM users WHERE username = ?", [userName], callback);
+    getUserById: (id, callback) => {
+        db.query("SELECT * FROM users WHERE id = ?", [id], callback);
     },
 
-    getUserRole: ( callback ) => {
+    getUserRole: (callback) => {
         db.query("SELECT DISTINCT role FROM users", callback);
-    },
+    },    
     
     getUserByUsername: (username, callback) => {
         db.query("SELECT * FROM users WHERE username = ?", [username], (err, results) => {
@@ -52,42 +52,26 @@ const User = {
         });
     },
 
-    updateUser: (userId, userData, callback) => {
-        db.query("SELECT * FROM users WHERE id = ?", [userId], (err, results) => {
-            if (err) return callback(err, null);
-            if (results.length === 0) return callback(new Error("User not found!"), null);
-
-            const existingUser = results[0];
-            const updateUser = {
-                username: userData.username || existingUser.username,
-                fullname: userData.fullname || existingUser.fullname,
-                role: userData.role || existingUser.role,
-            };
-
-            // Kiểm tra nếu người dùng nhập mật khẩu mới, thực hiện mã hóa
-            if (userData.password) {
-                bcrypt.hash(userData.password, 10, (err, hashedPassword) => {
-                    if (err) return callback(err, null);
-                    updateUser.password = hashedPassword;
-                    updateUserInDB(userId, updateUser, callback);
-                });
-            } else {
-                updateUser.password = existingUser.password; // Giữ nguyên mật khẩu cũ nếu không thay đổi
-                updateUserInDB(userId, updateUser, callback);
-            }
-        });
-
-        function updateUserInDB(userId, updateUser, callback) {
+    updateUser: (id, userData, callback) => {
+        if (userData.password) {
+            bcrypt.hash(userData.password, 10, (err, hashedPassword) => {
+                if (err) return callback(err);
+                db.query(
+                    "UPDATE users SET username = ?, password = ?, fullname = ?, role = ? WHERE id = ?",
+                    [userData.username, hashedPassword, userData.fullname, userData.role, id],
+                    callback
+                );
+            });
+        } else {
             db.query(
-                "UPDATE users SET username = ?, password = ?, fullname = ?, role = ? WHERE id = ?",
-                [updateUser.username, updateUser.password, updateUser.fullname, updateUser.role, userId],
-                (error, results) => {
-                    if (error) return callback(error, null);
-                    callback(null, { id: userId, ...updateUser });
-                }
+                "UPDATE users SET username = ?, fullname = ?, role = ? WHERE id = ?",
+                [userData.username, userData.fullname, userData.role, id],
+                callback
             );
         }
     },
+    
+    
 
     deleteUser: (userId, callback) => {
         db.query("DELETE FROM users WHERE id = ?", [userId], callback);

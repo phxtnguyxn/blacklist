@@ -45,13 +45,14 @@ exports.createUser = (req, res) => {
 exports.updateUser = (req, res) => {
     const userId = req.params.id;
     const updatedUser = req.body;
-    User.updateUser( userId, updatedUser, (err) => {
+    User.updateUser(userId, updatedUser, (err) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
         res.json({ message: 'User updated!', userId, updatedUser });
     });
 };
+
 
 exports.deleteUser = (req, res) => {
     const userId = req.params.id;

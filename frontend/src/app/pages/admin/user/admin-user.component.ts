@@ -51,6 +51,10 @@ export class AdminUserComponent implements OnInit {
     this.http.post('http://localhost:3000/api/users', this.newUser)
       .subscribe({
         next: () => {
+          if (!this.newUser.username || !this.newUser.password || !this.newUser.fullname || !this.newUser.role) {
+            this.showPopup('Vui lòng điền đầy đủ thông tin!');
+            return;
+          }
           this.newUser = { username: '', password: '', fullname: '', role: '' };
           this.getUsers();
           this.showPopup('Thêm người dùng thành công!');
