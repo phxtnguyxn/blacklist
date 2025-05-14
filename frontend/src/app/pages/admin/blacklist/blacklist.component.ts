@@ -5,17 +5,16 @@ import { FormsModule } from '@angular/forms';
 import { TopnavComponent } from '../../../components/topnav/topnav.component';
 import { SidenavComponent } from '../../../components/sidenav/sidenav.component';
 
-
 interface Blacklist {
   id?: number;
   cccd: string;
   fullname: string;
   company: string;
   violation: string;
-  penalty_start: Date;
-  penalty_end: Date;
+  penalty_start: Date | string;
+  penalty_end: Date | string;
   created_by: string;
-  created_at: Date;
+  created_at: Date | string;
   note: string;
 }
 
@@ -28,17 +27,7 @@ interface Blacklist {
 })
 export class BlacklistComponent implements OnInit {
   blacklist: Blacklist[] = [];
-  newBlacklist: Blacklist = {
-    cccd: '',
-    fullname: '',
-    company: '',
-    violation: '',
-    penalty_start: new Date(),
-    penalty_end: new Date(),
-    created_by: '',
-    created_at: new Date(),
-    note: ''
-  };
+  popupMessage: string = '';
 
   constructor(private http: HttpClient) {}
 
@@ -51,52 +40,67 @@ export class BlacklistComponent implements OnInit {
       .subscribe(data => this.blacklist = data);
   }
 
-  popupMessage: string | null = null;
-
-  showPopup(message: string) {
-    this.popupMessage = message;
-    setTimeout(() => this.popupMessage = null, 3000); 
-  }
-
   editBlacklist(item: Blacklist) {
-    const formattedItem = {
+    const id = item.id;
+    const payload = {
       ...item,
-      penalty_start: this.formatDateToMySQL(item.penalty_start),
-      penalty_end: this.formatDateToMySQL(item.penalty_end),
-      created_at: this.formatDateToMySQL(item.created_at),
+      penalty_start: this.formatDateSave(item.penalty_start),
+      penalty_end: this.formatDateSave(item.penalty_end),
     };
-  
-    this.http.put(`/api/blacklist/${item.id}`, formattedItem).subscribe({
+
+    this.http.put(`http://localhost:3000/api/blacklist/${id}`, payload)
+      .subscribe({
       next: () => {
+        this.popupMessage = 'Cập nhật thành công';
         this.getBlacklist();
-        this.showPopup('Cập nhật thành công!');
+        setTimeout(() => (this.popupMessage = ''), 3000);
       },
-      error: () => this.showPopup('Lỗi khi cập nhật!')
+      error: (err) => {
+        this.popupMessage = 'Cập nhật thất bại: ' + err.error?.message;
+        setTimeout(() => (this.popupMessage = ''), 3000);
+      },
     });
   }
-  
-  formatDateToMySQL(date: Date | string): string {
-    const d = new Date(date);
-    const pad = (n: number) => n.toString().padStart(2, '0');
-    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
-  }
-  
-  formatDateDisplay(dateStr: Date | string): string {
-    const d = new Date(dateStr);
-    const pad = (n: number) => n.toString().padStart(2, '0');
-    return `${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
-  }
-  
-  
-  deleteBlacklist(blacklist: Blacklist) {
-    this.http.delete(`http://localhost:3000/api/blacklist/${blacklist.id}`)
-      .subscribe({
-        next: () => {
-          this.getBlacklist();
-          this.showPopup('Xóa thành công!');
-        },
-        error: () => this.showPopup('Xóa thất bại!')
-      });
-  }
-}
 
+  deleteBlacklist(item: Blacklist) {
+    const id = item.id;
+    if (!id) return;
+    if (!confirm('Bạn có chắc chắn muốn xoá mục này?')) return;
+
+    this.http.delete(`http://localhost:3000/api/blacklist/${id}`).subscribe({
+      next: () => {
+        this.popupMessage = 'Xoá thành công';
+        this.getBlacklist();
+        setTimeout(() => (this.popupMessage = ''), 3000);
+      },
+      error: (err) => {
+        this.popupMessage = 'Xoá thất bại: ' + err.error?.message;
+        setTimeout(() => (this.popupMessage = ''), 3000);
+      },
+    });
+  }
+
+  formatDateDisplay(date: string | Date): string {
+    if (!date) return '';
+    const d = new Date(date);
+    const day = d.getDate().toString().padStart(2, '0');
+    const month = (d.getMonth() + 1).toString().padStart(2, '0');
+    const year = d.getFullYear();
+    const hours = d.getHours().toString().padStart(2, '0');
+    const minutes = d.getMinutes().toString().padStart(2, '0');
+    const seconds = d.getSeconds().toString().padStart(2, '0');
+    return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+  }
+  
+
+  formatDateSave(date: string | Date): string {
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = (d.getMonth() + 1).toString().padStart(2, '0');
+    const day = d.getDate().toString().padStart(2, '0');
+    const hours = d.getHours().toString().padStart(2, '0');
+    const minutes = d.getMinutes().toString().padStart(2, '0');
+    const seconds = d.getSeconds().toString().padStart(2, '0');
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  }  
+}
