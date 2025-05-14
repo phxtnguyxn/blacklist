@@ -58,16 +58,35 @@ export class BlacklistComponent implements OnInit {
     setTimeout(() => this.popupMessage = null, 3000); 
   }
 
-  editBlacklist(blacklist: Blacklist) {
-    this.http.put(`http://localhost:3000/api/blacklist/${blacklist.id}`, blacklist)
-      .subscribe({
-        next: () => {
-          this.getBlacklist();
-          this.showPopup('Sửa thành công!');
-        },
-        error: () => this.showPopup('Sửa thất bại!')
-      });
+  editBlacklist(item: Blacklist) {
+    const formattedItem = {
+      ...item,
+      penalty_start: this.formatDateToMySQL(item.penalty_start),
+      penalty_end: this.formatDateToMySQL(item.penalty_end),
+      created_at: this.formatDateToMySQL(item.created_at),
+    };
+  
+    this.http.put(`/api/blacklist/${item.id}`, formattedItem).subscribe({
+      next: () => {
+        this.getBlacklist();
+        this.showPopup('Cập nhật thành công!');
+      },
+      error: () => this.showPopup('Lỗi khi cập nhật!')
+    });
   }
+  
+  formatDateToMySQL(date: Date | string): string {
+    const d = new Date(date);
+    const pad = (n: number) => n.toString().padStart(2, '0');
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+  }
+  
+  formatDateDisplay(dateStr: Date | string): string {
+    const d = new Date(dateStr);
+    const pad = (n: number) => n.toString().padStart(2, '0');
+    return `${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+  }
+  
   
   deleteBlacklist(blacklist: Blacklist) {
     this.http.delete(`http://localhost:3000/api/blacklist/${blacklist.id}`)

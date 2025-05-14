@@ -37,7 +37,12 @@ export class AdminUserComponent implements OnInit {
 
   getUsers() {
     this.http.get<User[]>('http://localhost:3000/api/users')
-      .subscribe(data => this.users = data);
+      .subscribe(data => {
+        this.users = data.map(user => ({
+          ...user,
+          originalPassword: user.password // lưu lại bản gốc
+        }));
+      });
   }
 
   popupMessage: string | null = null;
@@ -63,8 +68,15 @@ export class AdminUserComponent implements OnInit {
       });
   }
 
-  updateUser(user: User) {
-    this.http.put(`http://localhost:3000/api/users/${user.id}`, user)
+  updateUser(user: User & { originalPassword?: string }) {
+    const updatedUser = { ...user };
+  
+    // Nếu mật khẩu không thay đổi (hoặc bỏ trống), xóa trường password trước khi gửi
+    if (!updatedUser.password || updatedUser.password === updatedUser.originalPassword) {
+      delete updatedUser.password;
+    }
+  
+    this.http.put(`http://localhost:3000/api/users/${user.id}`, updatedUser)
       .subscribe({
         next: () => {
           this.getUsers();
@@ -73,6 +85,8 @@ export class AdminUserComponent implements OnInit {
         error: () => this.showPopup('Sửa người dùng thất bại!')
       });
   }
+  
+  
 
   deleteUser(user: User) {
     this.http.delete(`http://localhost:3000/api/users/${user.id}`)

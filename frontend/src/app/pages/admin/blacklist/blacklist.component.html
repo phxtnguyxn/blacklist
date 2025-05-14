@@ -54,12 +54,12 @@
           </div>
           <div>
             <label>
-              <input [(ngModel)]="item.penalty_start" placeholder="Nhập ngày bắt đầu cấm" />
+              <input [value]="formatDateDisplay(item.penalty_start)" readonly />
             </label>
           </div>
           <div>
             <label>
-              <input [(ngModel)]="item.penalty_end" placeholder="Nhập ngày kết thúc cấm" />
+              <input [value]="formatDateDisplay(item.penalty_end)" placeholder="Nhập ngày kết thúc cấm" />
             </label>
           </div>
           <div>
@@ -69,7 +69,7 @@
           </div>
           <div>
             <label>
-              <input [(ngModel)]="item.created_at" placeholder="Nhập thời gian tạo" readonly/>
+              <input [value]="formatDateDisplay(item.created_at)" readonly/>
             </label>
           </div>
           <div>

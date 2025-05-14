@@ -66,7 +66,7 @@
 
 .blacklist-row {
   display: grid;
-  grid-template-columns: 40px 120px 150px 80px 200px 200px 200px 40px 200px 250px 130px;
+  grid-template-columns: 40px 125px 155px 90px 200px 200px 200px 40px 200px 220px 130px;
   align-items: center;
   justify-items: center;
   padding: 12px 16px;

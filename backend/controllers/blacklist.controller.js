@@ -19,23 +19,6 @@ exports.addBlacklist = (req, res) => {
     });
 }; 
 
-// exports.searchBlacklist = (req, res) => {
-//     const { cccd, fullname } = req.body;
-//     if (!cccd && !fullname) {
-//         return res.status(400).json({ message: "Vui lòng nhập CCCD hoặc fullname để tìm kiếm!" });
-//     }
-
-//     Blacklist.searchBlacklist( cccd, fullname, (err, result) => {
-//         if (err) {
-//             return res.status(500).json({ error: err.message });
-//         }
-//         if (result.length === 0 || !result) {
-//             return res.status(404).json({ message: 'Blacklist not found!' });
-//         }
-//         res.json(result[0]);
-//     });
-// };
-
 exports.searchBlacklist = (req, res) => {
     const { cccd, fullname } = req.body;
     const checked_by_id = parseInt(req.params.id, 10);

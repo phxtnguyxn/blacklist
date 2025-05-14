@@ -1,4 +1,5 @@
 const User = require('../models/user.model');
+const bcrypt = require('bcryptjs');
 
 exports.getAllUsers = (req, res) => {
     User.getAllUsers((err, results) => {
@@ -44,12 +45,30 @@ exports.createUser = (req, res) => {
 
 exports.updateUser = (req, res) => {
     const userId = req.params.id;
-    const updatedUser = req.body;
-    User.updateUser(userId, updatedUser, (err) => {
-        if (err) {
-            return res.status(500).json({ error: err.message });
+    const updatedUser = { ...req.body };
+
+    User.getUserById(userId, (err, currentUser) => {
+        if (err || !currentUser) {
+            return res.status(500).json({ error: 'User not found' });
         }
-        res.json({ message: 'User updated!', userId, updatedUser });
+
+        // Nếu không thay đổi password, giữ nguyên
+        if (
+            !updatedUser.password || 
+            updatedUser.password.trim() === '' || 
+            updatedUser.password === currentUser.password
+        ) {
+            delete updatedUser.password;
+        } else {
+            // Nếu mật khẩu thay đổi, mã hóa lại
+            const saltRounds = 10;
+            updatedUser.password = bcrypt.hashSync(updatedUser.password, saltRounds);
+        }
+
+        User.updateUser(userId, updatedUser, (err) => {
+            if (err) return res.status(500).json({ error: err.message });
+            res.json({ message: 'User updated!', userId });
+        });
     });
 };
 
