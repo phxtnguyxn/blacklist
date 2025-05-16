@@ -1,15 +1,9 @@
-
 <app-topnav></app-topnav>
 <div class="blacklist-container">
   <app-sidenav></app-sidenav>
   <div class="main-content">
     <div class="container">
       <h2>Quản lý Danh sách đen</h2>
-
-
-      <div class="search-form">
-        
-      </div>
 
       <div class="blacklist-table">
         <div class="blacklist-row blacklist-header">
@@ -25,26 +19,19 @@
           <div>Ghi chú</div>
           <div>Hành động</div>
         </div>
+
         <div class="blacklist-row" *ngFor="let item of blacklist">
           <div>
-            <label>
-              <input [(ngModel)]="item.id" readonly />
-            </label>
+            <input [value]="item.id" readonly />
           </div>
           <div>
-            <label>
-              <input [(ngModel)]="item.cccd" placeholder="Nhập CCCD" />
-            </label>
+            <input [(ngModel)]="item.cccd" placeholder="Nhập CCCD" />
           </div>
           <div>
-            <label>
-              <input [(ngModel)]="item.fullname" placeholder="Nhập họ tên" />
-            </label>
+            <input [(ngModel)]="item.fullname" placeholder="Nhập họ tên" />
           </div>
           <div>
-            <label>
-              <input [(ngModel)]="item.company" placeholder="Nhập công ty" />
-            </label>
+            <input [(ngModel)]="item.company" placeholder="Nhập công ty" />
           </div>
           <div>
             <div class="tooltip-wrapper">
@@ -53,28 +40,20 @@
             </div>
           </div>
           <div>
-            <label>
-              <input [value]="formatDateDisplay(item.penalty_start)" readonly />
-            </label>
+            <input [value]="formatDateDisplay(item.penalty_start)" readonly />
           </div>
           <div>
-            <label>
-              <input [value]="formatDateDisplay(item.penalty_end)" placeholder="Nhập ngày kết thúc cấm" />
-            </label>
+            <input [value]="formatDateDisplay(item.penalty_end)" placeholder="Nhập ngày kết thúc cấm" />
           </div>
           <div>
-            <label>
-              <input [(ngModel)]="item.created_by" placeholder="Nhập người tạo" readonly />
-            </label>
+            <input [(ngModel)]="item.created_by" placeholder="Người tạo" readonly />
           </div>
           <div>
-            <label>
-              <input [value]="formatDateDisplay(item.created_at)" readonly/>
-            </label>
+            <input [value]="formatDateDisplay(item.created_at)" readonly />
           </div>
           <div>
             <div class="tooltip-wrapper">
-              <input [(ngModel)]="item.note" placeholder="Nhập ghi chú" />
+              <input [(ngModel)]="item.note" placeholder="Ghi chú" />
               <span class="custom-tooltip">{{ item.note }}</span>
             </div>
           </div>
@@ -85,6 +64,26 @@
         </div>
       </div>
     </div>
+  </div>
+</div>
+
+<div class="popup-overlay" *ngIf="showAddPopup">
+  <div class="popup-form">
+    <h3>Thêm người vào blacklist</h3>
+    <form (ngSubmit)="submitAddForm()">
+      <input [(ngModel)]="newItem.cccd" name="cccd" placeholder="CCCD" required />
+      <input [(ngModel)]="newItem.fullname" name="fullname" placeholder="Họ tên" required />
+      <input [(ngModel)]="newItem.company" name="company" placeholder="Công ty" />
+      <input [(ngModel)]="newItem.violation" name="violation" placeholder="Lỗi vi phạm" required />
+      <input [(ngModel)]="newItem.penalty_start" name="penalty_start" type="date" required />
+      <input [(ngModel)]="newItem.penalty_end" name="penalty_end" type="date" required />
+      <input [(ngModel)]="newItem.note" name="note" placeholder="Ghi chú" />
+
+      <div class="popup-actions">
+        <button type="submit">Lưu</button>
+        <button type="button" (click)="closeAddPopup()">Huỷ</button>
+      </div>
+    </form>
   </div>
 </div>
 

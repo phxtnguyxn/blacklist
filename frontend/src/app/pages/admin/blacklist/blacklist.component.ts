@@ -13,8 +13,8 @@ interface Blacklist {
   violation: string;
   penalty_start: Date | string;
   penalty_end: Date | string;
-  created_by: string;
-  created_at: Date | string;
+  created_by: number;
+  created_at?: Date | string;
   note: string;
 }
 
@@ -45,8 +45,8 @@ export class BlacklistComponent implements OnInit {
     const payload = {
       ...item,
       penalty_start: this.formatDateSave(item.penalty_start),
-      penalty_end: this.formatDateSave(item.penalty_end),
-    };
+      penalty_end: item.penalty_end ? this.formatDateSave(item.penalty_end) : null,
+    };    
 
     this.http.put(`http://localhost:3000/api/blacklist/${id}`, payload)
       .subscribe({
@@ -80,6 +80,61 @@ export class BlacklistComponent implements OnInit {
     });
   }
 
+  addBlacklist(newItem: Blacklist) {
+    const payload = {
+      ...newItem,
+      penalty_start: this.formatDateSave(newItem.penalty_start),
+      penalty_end: newItem.penalty_end ? this.formatDateSave(newItem.penalty_end) : null,
+    };
+
+    this.http.post('http://localhost:3000/api/blacklist', payload)
+      .subscribe({
+        next: () => {
+          this.popupMessage = 'Thêm thành công';
+          this.getBlacklist();
+          setTimeout(() => (this.popupMessage = ''), 3000);
+        },
+        error: (err) => {
+          this.popupMessage = 'Thêm thất bại: ' + err.error?.message;
+          setTimeout(() => (this.popupMessage = ''), 3000);
+        },
+      });
+  }
+
+  showAddPopup = false;
+  newItem = {
+    cccd: '',
+    fullname: '',
+    company: '',
+    violation: '',
+    penalty_start: '',
+    penalty_end: '',
+    created_by: 0,
+    note: ''
+  };
+
+  openAddPopup() {
+    this.showAddPopup = true;
+  }
+
+  closeAddPopup() {
+    this.showAddPopup = false;
+  }
+
+  submitAddForm() {
+  const userId = localStorage.getItem('user_id') || '1'; // Lấy user_id từ localStorage (hoặc hardcode)
+  const now = new Date().toISOString(); // ISO 8601 string
+
+  this.newItem.created_by = +userId;
+
+  this.addBlacklist(this.newItem);
+  this.showAddPopup = false;
+  this.popupMessage = 'Thêm thành công!';
+  setTimeout(() => this.popupMessage = '', 2000);
+}
+
+
+
   formatDateDisplay(date: string | Date): string {
     if (!date) return '';
     const d = new Date(date);
@@ -93,14 +148,15 @@ export class BlacklistComponent implements OnInit {
   }
   
 
-  formatDateSave(date: string | Date): string {
-    const d = new Date(date);
-    const year = d.getFullYear();
-    const month = (d.getMonth() + 1).toString().padStart(2, '0');
-    const day = d.getDate().toString().padStart(2, '0');
-    const hours = d.getHours().toString().padStart(2, '0');
-    const minutes = d.getMinutes().toString().padStart(2, '0');
-    const seconds = d.getSeconds().toString().padStart(2, '0');
-    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-  }  
+  formatDateSave(date: string | Date): string | null {
+    if (!date) return null;
+    const d= new Date(date);
+      const year = d.getFullYear();
+      const month = (d.getMonth() + 1).toString().padStart(2, '0');
+      const day = d.getDate().toString().padStart(2, '0');
+      const hours = d.getHours().toString().padStart(2, '0');
+      const minutes = d.getMinutes().toString().padStart(2, '0');
+      const seconds = d.getSeconds().toString().padStart(2, '0');
+      return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  } 
 }

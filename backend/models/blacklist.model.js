@@ -34,15 +34,15 @@ const Blacklist = {
 
             const existingBlacklist = results[0];
             const updateBlacklist = {
-                id: userBlacklist.id || existingBlacklist.id,
-                cccd: userBlacklist.cccd || existingBlacklist.cccd,
-                fullname: userBlacklist.fullname || existingBlacklist.fullname,
-                company: userBlacklist.company || existingBlacklist.company,
-                violation: userBlacklist.violation || existingBlacklist.violation,
-                penalty_start: userBlacklist.penalty_start || existingBlacklist.penalty_start,
-                penalty_end: userBlacklist.penalty_end || existingBlacklist.penalty_end,
-                created_by: userBlacklist.created_by || existingBlacklist.created_by,
-                note: userBlacklist.note || existingBlacklist.note,
+                id: userBlacklist.id ?? existingBlacklist.id,
+                cccd: userBlacklist.cccd ?? existingBlacklist.cccd,
+                fullname: userBlacklist.fullname ?? existingBlacklist.fullname,
+                company: userBlacklist.company ?? existingBlacklist.company,
+                violation: userBlacklist.violation ?? existingBlacklist.violation,
+                penalty_start: userBlacklist.penalty_start !== undefined ? userBlacklist.penalty_start : existingBlacklist.penalty_start,
+                penalty_end: userBlacklist.penalty_end !== undefined ? userBlacklist.penalty_end : existingBlacklist.penalty_end,
+                created_by: userBlacklist.created_by ?? existingBlacklist.created_by,
+                note: userBlacklist.note ?? existingBlacklist.note,
             };
 
             db.query(
@@ -72,6 +72,22 @@ const Blacklist = {
     deleteBlacklist: (blacklistId, callback) => {
         db.query('DELETE FROM blacklist WHERE id = ?', [blacklistId], callback);
     },
+
+    addBlacklist: async (data) => {
+        const { cccd, fullname, company, violation, penalty_start, penalty_end, note, created_by } = data;
+        const created_at = new Date();
+    
+        const [result] = await db.query(
+          `INSERT INTO blacklist (cccd, fullname, company, violation, penalty_start, penalty_end, created_by, note)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+          [cccd, fullname, company, violation, penalty_start, penalty_end, created_by, note]
+        );
+    
+        return {
+          id: result.insertId,
+          cccd, fullname, company, violation, penalty_start, penalty_end, created_by, note
+        };
+      },
 };
 
 module.exports = Blacklist;
