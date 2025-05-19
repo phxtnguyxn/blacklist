@@ -13,7 +13,7 @@ interface Blacklist {
   violation: string;
   penalty_start: Date | string;
   penalty_end: Date | string;
-  created_by: number;
+  creator: string;
   created_at?: Date | string;
   note: string;
 }
@@ -109,7 +109,7 @@ export class BlacklistComponent implements OnInit {
     violation: '',
     penalty_start: '',
     penalty_end: '',
-    created_by: 0,
+    creator: '',
     note: ''
   };
 
@@ -124,8 +124,6 @@ export class BlacklistComponent implements OnInit {
   submitAddForm() {
   const userId = localStorage.getItem('user_id') || '1'; // Lấy user_id từ localStorage (hoặc hardcode)
   const now = new Date().toISOString(); // ISO 8601 string
-
-  this.newItem.created_by = +userId;
 
   this.addBlacklist(this.newItem);
   this.showAddPopup = false;

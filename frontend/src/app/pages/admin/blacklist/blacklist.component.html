@@ -15,7 +15,7 @@
           <div>Ngày bắt đầu cấm</div>
           <div>Ngày kết thúc cấm</div>
           <div>Tạo bởi</div>
-          <div>Thời gian tạo</div>
+          <!-- <div>Thời gian tạo</div> -->
           <div>Ghi chú</div>
           <div>Hành động</div>
         </div>
@@ -46,11 +46,11 @@
             <input [value]="formatDateDisplay(item.penalty_end)" placeholder="Nhập ngày kết thúc cấm" />
           </div>
           <div>
-            <input [(ngModel)]="item.created_by" placeholder="Người tạo" readonly />
+            <input [(ngModel)]="item.creator" placeholder="Người tạo" readonly />
           </div>
-          <div>
+          <!-- <div>
             <input [value]="formatDateDisplay(item.created_at)" readonly />
-          </div>
+          </div> -->
           <div>
             <div class="tooltip-wrapper">
               <input [(ngModel)]="item.note" placeholder="Ghi chú" />

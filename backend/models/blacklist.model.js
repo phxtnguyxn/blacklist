@@ -3,7 +3,7 @@ const db = require('../config/db');
 const Blacklist = {
     
     getBlacklist: (callback) => {
-        db.query('SELECT * FROM blacklist', callback);
+        db.query('select blacklist.id, blacklist.cccd, blacklist.fullname, blacklist.company, blacklist.violation, blacklist.penalty_start, blacklist.penalty_end, users.username as creator, blacklist.created_at, blacklist.note from blacklist left join users on blacklist.created_by = users.id', callback);
     },
 
     searchBlacklist: (cccd, fullname, checked_by_id, callback) => {
