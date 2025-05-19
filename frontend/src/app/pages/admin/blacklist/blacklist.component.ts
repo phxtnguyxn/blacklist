@@ -125,6 +125,12 @@ export class BlacklistComponent implements OnInit {
   const userId = localStorage.getItem('user_id') || '1'; // Lấy user_id từ localStorage (hoặc hardcode)
   const now = new Date().toISOString(); // ISO 8601 string
 
+  if (!this.newItem.penalty_start || !this.newItem.penalty_end || !this.newItem.cccd || !this.newItem.fullname || !this.newItem.company || !this.newItem.violation) {
+    this.popupMessage = 'Vui lòng điền đầy đủ thông tin!';
+    setTimeout(() => this.popupMessage = '', 2000);
+    return;
+  }
+
   this.addBlacklist(this.newItem);
   this.showAddPopup = false;
   this.popupMessage = 'Thêm thành công!';
@@ -133,7 +139,7 @@ export class BlacklistComponent implements OnInit {
 
 
 
-  formatDateDisplay(date: string | Date): string {
+  formatDateTimeDisplay(date: string | Date): string {
     if (!date) return '';
     const d = new Date(date);
     const day = d.getDate().toString().padStart(2, '0');
@@ -157,4 +163,13 @@ export class BlacklistComponent implements OnInit {
       const seconds = d.getSeconds().toString().padStart(2, '0');
       return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   } 
+
+  formatDateDisplay(date: string | Date): string {
+    if (!date) return '';
+    const d = new Date(date);
+    const day = d.getDate().toString().padStart(2, '0');
+    const month = (d.getMonth() + 1).toString().padStart(2, '0');
+    const year = d.getFullYear();
+    return `${day}/${month}/${year}`;
+  }
 }

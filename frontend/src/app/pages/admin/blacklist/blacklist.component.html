@@ -5,6 +5,10 @@
     <div class="container">
       <h2>Quản lý Danh sách đen</h2>
 
+      <div class="add-button-container">
+        <button (click)="openAddPopup()">+ Thêm </button>
+      </div>
+
       <div class="blacklist-table">
         <div class="blacklist-row blacklist-header">
           <div>ID</div>
@@ -31,7 +35,10 @@
             <input [(ngModel)]="item.fullname" placeholder="Nhập họ tên" />
           </div>
           <div>
-            <input [(ngModel)]="item.company" placeholder="Nhập công ty" />
+            <div class="tooltip-wrapper">
+              <input [(ngModel)]="item.company" placeholder="Nhập công ty" />
+              <span class="custom-tooltip">{{ item.company }}</span>
+            </div>
           </div>
           <div>
             <div class="tooltip-wrapper">
@@ -71,13 +78,39 @@
   <div class="popup-form">
     <h3>Thêm người vào blacklist</h3>
     <form (ngSubmit)="submitAddForm()">
-      <input [(ngModel)]="newItem.cccd" name="cccd" placeholder="CCCD" required />
-      <input [(ngModel)]="newItem.fullname" name="fullname" placeholder="Họ tên" required />
-      <input [(ngModel)]="newItem.company" name="company" placeholder="Công ty" />
-      <input [(ngModel)]="newItem.violation" name="violation" placeholder="Lỗi vi phạm" required />
-      <input [(ngModel)]="newItem.penalty_start" name="penalty_start" type="date" required />
-      <input [(ngModel)]="newItem.penalty_end" name="penalty_end" type="date" required />
-      <input [(ngModel)]="newItem.note" name="note" placeholder="Ghi chú" />
+
+      <div class="input-wrapper">
+        <input [(ngModel)]="newItem.cccd" name="cccd" placeholder="CCCD" required />
+        <span class="required-star">*</span>
+      </div>
+
+      <div class="input-wrapper">
+        <input [(ngModel)]="newItem.fullname" name="fullname" placeholder="Họ tên" required />
+        <span class="required-star">*</span>
+      </div>
+
+      <div class="input-wrapper">
+        <input [(ngModel)]="newItem.company" name="company" placeholder="Công ty" required />
+        <span class="required-star">*</span>
+      </div>
+
+      <div class="input-wrapper">
+        <input [(ngModel)]="newItem.violation" name="violation" placeholder="Lỗi vi phạm" required />
+        <span class="required-star">*</span>
+      </div>
+
+      <div class="input-wrapper">
+        <input [(ngModel)]="newItem.penalty_start" name="penalty_start" type="date" required />
+        <span class="required-star">*</span>
+      </div>
+
+      <div class="input-wrapper">
+        <input [(ngModel)]="newItem.penalty_end" name="penalty_end" type="date" required />
+      </div>
+
+      <div class="input-wrapper">
+        <input [(ngModel)]="newItem.note" name="note" placeholder="Ghi chú" />
+      </div>
 
       <div class="popup-actions">
         <button type="submit">Lưu</button>
@@ -86,6 +119,7 @@
     </form>
   </div>
 </div>
+
 
 <div class="popup-notification" *ngIf="popupMessage">
   {{ popupMessage }}

@@ -68,13 +68,13 @@
 .blacklist-row {
   display: grid;
   grid-template-columns:
-    45px
+    50px
     130px
     200px
-    100px
+    105px
     2fr
-    160px
-    180px
+    100px
+    100px
     130px
     /* 160px */
     1.5fr
@@ -89,13 +89,13 @@
 .blacklist-header {
   display: grid;
   grid-template-columns:
-    45px
+    50px
     130px
     200px
-    100px
+    105px
     2fr
-    160px
-    180px
+    100px
+    100px
     130px
     /* 160px */
     1.5fr
@@ -121,6 +121,29 @@
   border: 1px solid #ddd;
   background-color: #fcfcfc;
   box-sizing: border-box;
+}
+
+/* Form thêm */
+
+.input-wrapper {
+  position: relative;
+  margin-bottom: 12px;
+}
+
+.input-wrapper input {
+  width: 100%;
+  padding-right: 20px; /* tạo khoảng trống cho dấu * */
+}
+
+.required-star {
+  color: red;
+  font-weight: bold;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: -10px; /* Dấu * nằm ngoài input về bên trái */
+  pointer-events: none;
+  font-size: 18px;
 }
 
 /*---------------*/
@@ -194,23 +217,22 @@
 }
 
 /* Nút Thêm */
-.actions {
-  text-align: right;
-  margin-bottom: 12px;
+.add-button-container {
+  margin-bottom: 5px;
 }
 
-.add-button {
-  background-color: #006400;
+.add-button-container button {
+  padding: 8px 16px;
+  font-size: 14px;
+  background-color: #8B0000;
   color: white;
-  padding: 10px 18px;
   border: none;
-  border-radius: 8px;
-  font-weight: 500;
+  border-radius: 10px;
   cursor: pointer;
 }
 
-.add-button:hover {
-  background-color: #007d00;
+.add-button-container button:hover {
+  background-color: #333333;
 }
 
 /* Popup overlay */

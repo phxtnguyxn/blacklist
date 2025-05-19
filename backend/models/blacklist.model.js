@@ -73,21 +73,22 @@ const Blacklist = {
         db.query('DELETE FROM blacklist WHERE id = ?', [blacklistId], callback);
     },
 
-    addBlacklist: async (data) => {
-        const { cccd, fullname, company, violation, penalty_start, penalty_end, note, created_by } = data;
-        const created_at = new Date();
-    
-        const [result] = await db.query(
-          `INSERT INTO blacklist (cccd, fullname, company, violation, penalty_start, penalty_end, created_by, note)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-          [cccd, fullname, company, violation, penalty_start, penalty_end, created_by, note]
+    addBlacklist: (newBlacklist, callback) => {
+        db.query(
+            'INSERT INTO blacklist (cccd, fullname, company, violation, penalty_start, penalty_end, created_by, note) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+            [
+                newBlacklist.cccd,
+                newBlacklist.fullname,
+                newBlacklist.company,
+                newBlacklist.violation,
+                newBlacklist.penalty_start,
+                newBlacklist.penalty_end,
+                newBlacklist.created_by,
+                newBlacklist.note
+            ],
+            callback
         );
-    
-        return {
-          id: result.insertId,
-          cccd, fullname, company, violation, penalty_start, penalty_end, created_by, note
-        };
-      },
+    }
 };
 
 module.exports = Blacklist;

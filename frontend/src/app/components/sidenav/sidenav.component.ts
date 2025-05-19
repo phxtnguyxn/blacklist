@@ -17,8 +17,8 @@ export class SidenavComponent {
   adminMenu = [
     { icon: 'person', label: 'Người dùng', route: '/admin-user' },
     { icon: 'shield', label: 'Danh sách đen', route: '/blacklist' },
+    { icon: 'inventory_2', label: 'Lịch ký', route: '/assets' },
     { icon: 'login', label: 'Entrance', route: '/entrance' },
-    { icon: 'inventory_2', label: 'Assets', route: '/assets' },
     { icon: 'language', label: 'Network Security', route: '/network-security' },
     { icon: 'smartphone', label: 'PC/Mobile Security', route: '/pc-mobile-security' },
     { icon: 'more_horiz', label: 'Etc', route: '/etc' }
