@@ -71,8 +71,7 @@ export class AdminUserComponent implements OnInit {
   updateUser(user: User & { originalPassword?: string }) {
     const updatedUser = { ...user };
   
-    // Nếu mật khẩu không thay đổi (hoặc bỏ trống), xóa trường password trước khi gửi
-    if (!updatedUser.password || updatedUser.password === updatedUser.originalPassword) {
+    if (!updatedUser.password || updatedUser.password.trim() === '') {
       delete updatedUser.password;
     }
   

@@ -53,26 +53,13 @@ const User = {
     },
 
     updateUser: (id, userData, callback) => {
-        if (userData.password) {
-            bcrypt.hash(userData.password, 10, (err, hashedPassword) => {
-                if (err) return callback(err);
-                db.query(
-                    "UPDATE users SET username = ?, password = ?, fullname = ?, role = ? WHERE id = ?",
-                    [userData.username, hashedPassword, userData.fullname, userData.role, id],
-                    callback
-                );
-            });
-        } else {
-            db.query(
-                "UPDATE users SET username = ?, fullname = ?, role = ? WHERE id = ?",
-                [userData.username, userData.fullname, userData.role, id],
-                callback
-            );
-        }
+        db.query(
+            "UPDATE users SET username = ?, password = ?, fullname = ?, role = ? WHERE id = ?",
+            [userData.username, userData.password, userData.fullname, userData.role, id],
+            callback
+        );
     },
     
-    
-
     deleteUser: (userId, callback) => {
         db.query("DELETE FROM users WHERE id = ?", [userId], callback);
     },

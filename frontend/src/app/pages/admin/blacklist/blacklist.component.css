@@ -27,33 +27,6 @@
   margin-bottom: 20px;
 }
 
-/* Form tìm kiếm */
-.search-form {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
-  justify-content: center;
-}
-
-.search-form input {
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  width: 200px;
-}
-
-.search-form button {
-  background-color: #800000;
-  color: white;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.search-form button:hover {
-  background-color: #a00000;
-}
 
 /* Bảng hiển thị danh sách */
 .blacklist-table {
@@ -224,15 +197,15 @@
 .add-button-container button {
   padding: 8px 16px;
   font-size: 14px;
-  background-color: #8B0000;
-  color: white;
-  border: none;
+  color: #8B0000;
+  border-color: #333333;
+  border-width: 1px;
   border-radius: 10px;
   cursor: pointer;
 }
 
 .add-button-container button:hover {
-  background-color: #333333;
+  box-shadow: #666 0px 0px 3px;
 }
 
 /* Popup overlay */

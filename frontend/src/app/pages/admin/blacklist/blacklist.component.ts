@@ -13,8 +13,7 @@ interface Blacklist {
   violation: string;
   penalty_start: Date | string;
   penalty_end: Date | string;
-  creator: string;
-  created_at?: Date | string;
+  created_by: string;
   note: string;
 }
 
@@ -109,7 +108,7 @@ export class BlacklistComponent implements OnInit {
     violation: '',
     penalty_start: '',
     penalty_end: '',
-    creator: '',
+    created_by: '',
     note: ''
   };
 
@@ -122,9 +121,6 @@ export class BlacklistComponent implements OnInit {
   }
 
   submitAddForm() {
-  const userId = localStorage.getItem('user_id') || '1'; // Lấy user_id từ localStorage (hoặc hardcode)
-  const now = new Date().toISOString(); // ISO 8601 string
-
   if (!this.newItem.penalty_start || !this.newItem.penalty_end || !this.newItem.cccd || !this.newItem.fullname || !this.newItem.company || !this.newItem.violation) {
     this.popupMessage = 'Vui lòng điền đầy đủ thông tin!';
     setTimeout(() => this.popupMessage = '', 2000);

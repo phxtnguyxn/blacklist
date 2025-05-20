@@ -11,13 +11,19 @@ exports.getBlacklist = (req, res) => {
 
 exports.addBlacklist = (req, res) => {
     const newBlacklist = req.body;
+    const user = req.session.user;
+    if (!user) return res.status(401).json({ error: 'Unauthorized' });  
+    newBlacklist.created_by = user.username; 
+
     Blacklist.addBlacklist(newBlacklist, (err, results) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
         res.status(201).json({ message: 'Blacklist added successfully!', CCCD: results.insertId, newBlacklist });
     });
-}; 
+};
+
+
 
 exports.searchBlacklist = (req, res) => {
     const { cccd, fullname } = req.body;

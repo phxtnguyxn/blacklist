@@ -52,18 +52,18 @@ exports.updateUser = (req, res) => {
             return res.status(500).json({ error: 'User not found' });
         }
 
-        // Nếu không thay đổi password, giữ nguyên
-        if (
-            !updatedUser.password || 
-            updatedUser.password.trim() === '' || 
-            updatedUser.password === currentUser.password
-        ) {
-            delete updatedUser.password;
-        } else {
-            // Nếu mật khẩu thay đổi, mã hóa lại
-            const saltRounds = 10;
-            updatedUser.password = bcrypt.hashSync(updatedUser.password, saltRounds);
-        }
+        // // Nếu không thay đổi password, giữ nguyên
+        // if (
+        //     !updatedUser.password || 
+        //     updatedUser.password.trim() === '' || 
+        //     updatedUser.password === currentUser.password
+        // ) {
+        //     delete updatedUser.password;
+        // } else {
+        //     // Nếu mật khẩu thay đổi, mã hóa lại
+        //     const saltRounds = 10;
+        //     updatedUser.password = bcrypt.hashSync(updatedUser.password, saltRounds);
+        // }
 
         User.updateUser(userId, updatedUser, (err) => {
             if (err) return res.status(500).json({ error: err.message });
