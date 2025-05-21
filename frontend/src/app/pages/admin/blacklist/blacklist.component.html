@@ -53,7 +53,7 @@
             <input [value]="formatDateDisplay(item.penalty_end)" placeholder="Nhập ngày kết thúc cấm" />
           </div>
           <div>
-            <input [(ngModel)]="item.created_by" placeholder="Người tạo" readonly />
+            <input [(ngModel)]="item.creator" placeholder="Người tạo" readonly />
           </div>
           <!-- <div>
             <input [value]="formatDateDisplay(item.created_at)" readonly />
@@ -76,7 +76,7 @@
 
 <div class="popup-overlay" *ngIf="showAddPopup">
   <div class="popup-form">
-    <h3>Thêm người vào blacklist</h3>
+    <h3>Thêm Blacklist</h3>
     <form (ngSubmit)="submitAddForm()">
 
       <div class="input-wrapper">

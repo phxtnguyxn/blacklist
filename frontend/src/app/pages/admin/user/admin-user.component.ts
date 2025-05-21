@@ -71,7 +71,7 @@ export class AdminUserComponent implements OnInit {
   updateUser(user: User & { originalPassword?: string }) {
     const updatedUser = { ...user };
   
-    if (!updatedUser.password || updatedUser.password.trim() === '') {
+    if (!updatedUser.password || updatedUser.password.trim() === '' || updatedUser.password === updatedUser.originalPassword) {
       delete updatedUser.password;
     }
   

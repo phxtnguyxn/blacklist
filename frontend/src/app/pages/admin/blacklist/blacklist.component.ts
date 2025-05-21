@@ -13,7 +13,7 @@ interface Blacklist {
   violation: string;
   penalty_start: Date | string;
   penalty_end: Date | string;
-  created_by: string;
+  creator: string;
   note: string;
 }
 
@@ -108,7 +108,7 @@ export class BlacklistComponent implements OnInit {
     violation: '',
     penalty_start: '',
     penalty_end: '',
-    created_by: '',
+    creator: '',
     note: ''
   };
 

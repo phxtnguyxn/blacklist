@@ -2,24 +2,26 @@ const Blacklist = require('../models/blacklist.model');
 
 exports.getBlacklist = (req, res) => {
     Blacklist.getBlacklist((err, results) => {
-        if (err) {
-            return res.status(500).json({ error: err.message });
-        }
+        if (err) return res.status(500).json({ error: err.message });
         res.json(results);
     });
 };
 
 exports.addBlacklist = (req, res) => {
     const newBlacklist = req.body;
-    const user = req.session.user;
-    if (!user) return res.status(401).json({ error: 'Unauthorized' });  
-    newBlacklist.created_by = user.username; 
+
+    // Lấy ID người tạo từ token
+    newBlacklist.created_by = req.user.id;
 
     Blacklist.addBlacklist(newBlacklist, (err, results) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
-        res.status(201).json({ message: 'Blacklist added successfully!', CCCD: results.insertId, newBlacklist });
+        res.status(201).json({
+            message: '✅ Blacklist added successfully!',
+            CCCD: results.insertId,
+            newBlacklist
+        });
     });
 };
 

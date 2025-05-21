@@ -8,20 +8,26 @@ const db = require('./config/db');
 
 const app = express();
 
-app.use(cors({
-  origin: 'http://localhost:4200', 
-  methods: 'GET,POST,PUT,DELETE',
-  allowedHeaders: 'Content-Type,Authorization',
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: "http://localhost:4200", // hoặc domain thực tế
+    credentials: true, // Cho phép gửi cookie
+  })
+);
 
 
-app.use(session({
-  secret: 'lgevh009851',
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: false }
-}));
+app.use(
+  session({
+    secret: "Lgevh@2025",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: false, // Đặt thành true nếu dùng HTTPS
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24, // 1 ngày
+    },
+  })
+);
 
 
 app.use(bodyParser.json());
