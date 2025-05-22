@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { jwtDecode } from 'jwt-decode';
 import { TopnavComponent } from '../../../components/topnav/topnav.component';
 import { SidenavComponent } from '../../../components/sidenav/sidenav.component';
 
@@ -34,6 +35,20 @@ export class BlacklistComponent implements OnInit {
     this.getBlacklist();
   }
 
+  getUsernameFromToken(): string | null {
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const decoded: any = jwtDecode(token);
+        return decoded.username;
+      } catch (err) {
+        console.error('Invalid token:', err);
+      }
+    }
+    return null;
+  }
+
+
   getBlacklist() {
     this.http.get<Blacklist[]>('http://localhost:3000/api/blacklist')
       .subscribe(data => this.blacklist = data);
@@ -41,8 +56,14 @@ export class BlacklistComponent implements OnInit {
 
   editBlacklist(item: Blacklist) {
     const id = item.id;
+    const username = this.getUsernameFromToken();
+    if (!username) {
+      alert('Không thể xác định người dùng!');
+      return;
+    }
     const payload = {
       ...item,
+      created_by: username,
       penalty_start: this.formatDateSave(item.penalty_start),
       penalty_end: item.penalty_end ? this.formatDateSave(item.penalty_end) : null,
     };    
@@ -80,8 +101,15 @@ export class BlacklistComponent implements OnInit {
   }
 
   addBlacklist(newItem: Blacklist) {
+    const username = this.getUsernameFromToken();
+    if (!username) {
+      alert('Không thể xác định người dùng!');
+      return;
+    }
+
     const payload = {
       ...newItem,
+      created_by: username,
       penalty_start: this.formatDateSave(newItem.penalty_start),
       penalty_end: newItem.penalty_end ? this.formatDateSave(newItem.penalty_end) : null,
     };

@@ -8,22 +8,24 @@ exports.getBlacklist = (req, res) => {
 };
 
 exports.addBlacklist = (req, res) => {
+    const username = req.user.username;
+    if (!username) return res.status(401).json({ message: 'Unauthorized' });
+
     const newBlacklist = req.body;
+    const created_by = username;
 
-    // Lấy ID người tạo từ token
-    newBlacklist.created_by = req.user.id;
-
-    Blacklist.addBlacklist(newBlacklist, (err, results) => {
+    Blacklist.addBlacklist(newBlacklist, created_by, (err, results) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
         res.status(201).json({
             message: '✅ Blacklist added successfully!',
-            CCCD: results.insertId,
+            id: results.insertId,
             newBlacklist
         });
     });
 };
+
 
 
 
@@ -70,12 +72,13 @@ exports.searchBlacklist = (req, res) => {
 
 exports.updateBlacklist = (req, res) => {
     const blacklistId = req.params.id;
-    const updatedBlacklist = req.body;
-    Blacklist.updateBlacklist(blacklistId, updatedBlacklist, (err) => {
+    const newBlacklist = req.body;
+    const created_by = req.user.username;
+    Blacklist.updateBlacklist(blacklistId, created_by, newBlacklist, (err) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
-        res.json({ message: 'Blacklist updated!', blacklistId, updatedBlacklist });
+        res.json({ message: 'Blacklist updated!', blacklistId, newBlacklist });
     });
 };
 
